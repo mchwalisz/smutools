@@ -436,7 +436,8 @@ int main(int argc, char *argv[]) {
 					sb = spectool_phy_getsweep(di);
 					if (sb == NULL)
 						continue;
-					printf("%s: ", spectool_phy_getname(di));
+					//printf("%s: ", spectool_phy_getname(di));
+					printf("%d %d %d %d ", sb->tm_start.tv_sec, sb->tm_start.tv_usec, sb->tm_end.tv_sec, sb->tm_end.tv_usec);
 					for (r = 0; r < sb->num_samples; r++) {
 						// printf("[%d %d %d %d] ", sb->sample_data[r], sb->amp_offset_mdbm, sb->amp_res_mdbm, sb->sample_data[r] * (sb->amp_res_mdbm / 1000) + (sb->amp_offset_mdbm / 1000));
 						printf("%d ", 
