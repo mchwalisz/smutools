@@ -10,7 +10,7 @@
 #endif
 
 enum {
-  SAMPLING_PERIOD = 64, // ticks of ACLK, which runs at 32768 Hz, use values below 64 at your own risk!
+  SAMPLING_PERIOD = 128, // ticks of ACLK, which runs at 32768 Hz, use values below 64 at your own risk!
 };
 
 /*** no need to change anything below ***/

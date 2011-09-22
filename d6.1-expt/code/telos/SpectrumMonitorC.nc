@@ -95,8 +95,10 @@ implementation {
     uint32_t now = call Alarm.getNow();
 
     atomic {
-      if (now > tlast + SAMPLING_PERIOD + 1)
+      if (now>32767 && now > tlast + SAMPLING_PERIOD + 1) {
         call Leds.led0On();
+        return;
+      }
 
       rssi = readRssiFast() - 45;
 
@@ -112,15 +114,17 @@ implementation {
       findex = findex % NUM_FREQUENCIES;
 
       tlast += SAMPLING_PERIOD;
-      if (numwritten <= 0 || numwritten > MAX_STRLEN)
+      if (numwritten <= 0 || (m_traceIndex + numwritten) > PRINTF_MSG_LENGTH)
         call Leds.led1On();
       else {
         m_traceIndex += numwritten;
-        remaining = sizeof(printf_msg_t) - m_traceIndex;
-        if (remaining < MAX_STRLEN) {
-          memset((char*) &m_currentTrace->buffer[m_traceIndex], 0, remaining);
+        if (findex == 0) {
+          // one sweep done -> send result over serial
+          remaining = sizeof(printf_msg_t) - m_traceIndex;
+          if (remaining < MAX_STRLEN)
+            memset((char*) &m_currentTrace->buffer[m_traceIndex], 0, remaining);
           post sendDataOverSerialTask();
-          return;
+          return; // set Alarm in task below
         }
       }
       call Alarm.startAt(tlast, SAMPLING_PERIOD);

@@ -35,3 +35,18 @@ Usage:
            RF power is given in dBm
 
 
+Parsing data from a TWIST experiment:
+
+1. Create the image
+   $ make telosb
+
+2. Install build/telosb/main.exe on some (all) TWIST tmote nodes via
+   TWIST webinterface https://www.twist.tu-berlin.de:8000
+
+3. Start TWIST automatic tracing function
+
+4. After experiment download the trace file and extract the data to text files:
+   -> run the "./twist_trace_parser" script. It creates one file per node with 
+   the samples incl. a NTP timestamp taken on the slug for each sweep.
+   
+
