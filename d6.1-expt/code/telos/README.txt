@@ -23,6 +23,13 @@ Usage:
 
 1. Install the image on a telosb node:
    $ make telosb install
+   
+   Note: if you have more than one telosb attached to your laptop and want to 
+   install the app to a specific one, first run the "motelist" command and then
+
+   $ make telosb install bsl,/dev/ttyUSB1
+   
+   where "/dev/ttyUSB1" can be replaced by a device file returned by "motelist"
 
 2. Start a serialforwarder:
    $ CLASSPATH=.:./tinyos.jar:$CLASSPATH java net.tinyos.sf.SerialForwarder -comm serial@/dev/ttyUSB0:115200 -no-gui -port 9002
