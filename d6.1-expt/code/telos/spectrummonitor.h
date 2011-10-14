@@ -1,5 +1,5 @@
-#ifndef CREWDEMO_H
-#define CREWDEMO_H
+#ifndef SPECTRUMMONITOR_H
+#define SPECTRUMMONITOR_H
 
 #ifndef FREQUENCY_VECTOR
 

@@ -4,6 +4,10 @@ CFLAGS +=  -I./cc2420/
 C_INCLUDE = $(TOSDIR)/../support/sdk/c/sf
 BUILD_EXTRA_DEPS += twist_trace_parser
 
+ifdef FREQUENCY_VECTOR
+CFLAGS += -DFREQUENCY_VECTOR=$(FREQUENCY_VECTOR)
+endif
+
 include $(MAKERULES)
 
 twist_trace_parser: twist_trace_parser.c $(MSGS)
