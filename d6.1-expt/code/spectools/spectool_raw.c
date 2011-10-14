@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	while (1) {
-		int o = getopt_long(argc, argv, "n:bhr:l",
+		int o = getopt_long(argc, argv, "n:bhr:d:l",
 							long_options, &option_index);
 
 		if (o < 0)
@@ -437,7 +437,7 @@ int main(int argc, char *argv[]) {
 					if (sb == NULL)
 						continue;
 					//printf("%s: ", spectool_phy_getname(di));
-					printf("%d %d %d %d ", sb->tm_start.tv_sec, sb->tm_start.tv_usec, sb->tm_end.tv_sec, sb->tm_end.tv_usec);
+					printf("%d %d %d %d ", (int) sb->tm_start.tv_sec, (int) sb->tm_start.tv_usec, (int) sb->tm_end.tv_sec, (int) sb->tm_end.tv_usec);
 					for (r = 0; r < sb->num_samples; r++) {
 						// printf("[%d %d %d %d] ", sb->sample_data[r], sb->amp_offset_mdbm, sb->amp_res_mdbm, sb->sample_data[r] * (sb->amp_res_mdbm / 1000) + (sb->amp_offset_mdbm / 1000));
 						printf("%d ", 
