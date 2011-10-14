@@ -6,7 +6,7 @@ This application periodically samples RF noise power in the 2.4 GHz band on a
 set of user-defined frequencies (FREQUENCY_VECTOR in spectrummonitor.h) and
 continuously outputs the result over the USB interface.  Each sample represents
 RF power averaged over a 192 microsec interval on a given frequency. By default
-the sampling period is 64/32768 sec (roughly 2 ms), the bandwidth (IEEE
+the sampling period is 128/32768 sec (roughly 4 ms), the bandwidth (IEEE
 802.15.4 channel width) is 2 MHz (fixed). This app is only available for the
 TelosB (Tmote Sky) platform. During operation, all LEDs should remain off. The
 RED LED will indicate an error; also, in case of an error the resulting RSSI
@@ -15,8 +15,8 @@ sampling will be set to a value of 100 dBm.
 Timing example: if FREQUENCY_VECTOR is defined as {2400, 2410, 2415} (in
 spectrummonitor.h), then the radio will continously, round robin sweep over the
 frequencies 2400->2410->2415->2400->2410->etc. Because there are 3 center
-frequencies each frequency is sampled once every ~6ms (assuming default
-SAMPLING_PERIOD of 64 jiffies in spectrummonitor.h). This includes the time for
+frequencies each frequency is sampled once every ~12ms (assuming default
+SAMPLING_PERIOD of 128 jiffies in spectrummonitor.h). This includes the time for
 streaming the results over the USB interface.
 
 
