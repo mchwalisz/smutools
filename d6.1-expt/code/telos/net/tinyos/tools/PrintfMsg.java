@@ -35,7 +35,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
         amTypeSet(AM_TYPE);
     }
 
-    /**2
+    /**
      * Create a new PrintfMsg using the given byte array
      * as backing store.
      */
