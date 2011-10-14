@@ -9,12 +9,12 @@ package net.tinyos.tools;
 public class PrintfMsg extends net.tinyos.message.Message {
 
     /** The default size of this message type in bytes. */
-    public static final int DEFAULT_MESSAGE_SIZE = 90;
+    public static final int DEFAULT_MESSAGE_SIZE = 220;
 
     /** The Active Message type associated with this message. */
     public static final int AM_TYPE = 100;
 
-    /** Create a new PrintfMsg of size 90. */
+    /** Create a new PrintfMsg of size 220. */
     public PrintfMsg() {
         super(DEFAULT_MESSAGE_SIZE);
         amTypeSet(AM_TYPE);
@@ -35,7 +35,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
         amTypeSet(AM_TYPE);
     }
 
-    /**
+    /**2
      * Create a new PrintfMsg using the given byte array
      * as backing store.
      */
@@ -88,7 +88,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
       String s = "Message <PrintfMsg> \n";
       try {
         s += "  [buffer=";
-        for (int i = 0; i < 90; i++) {
+        for (int i = 0; i < 220; i++) {
           s += "0x"+Long.toHexString(getElement_buffer(i) & 0xff)+" ";
         }
         s += "]\n";
@@ -124,7 +124,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
      */
     public static int offset_buffer(int index1) {
         int offset = 0;
-        if (index1 < 0 || index1 >= 90) throw new ArrayIndexOutOfBoundsException();
+        if (index1 < 0 || index1 >= 220) throw new ArrayIndexOutOfBoundsException();
         offset += 0 + index1 * 8;
         return (offset / 8);
     }
@@ -134,7 +134,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
      */
     public static int offsetBits_buffer(int index1) {
         int offset = 0;
-        if (index1 < 0 || index1 >= 90) throw new ArrayIndexOutOfBoundsException();
+        if (index1 < 0 || index1 >= 220) throw new ArrayIndexOutOfBoundsException();
         offset += 0 + index1 * 8;
         return offset;
     }
@@ -143,7 +143,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
      * Return the entire array 'buffer' as a short[]
      */
     public short[] get_buffer() {
-        short[] tmp = new short[90];
+        short[] tmp = new short[220];
         for (int index0 = 0; index0 < numElements_buffer(0); index0++) {
             tmp[index0] = getElement_buffer(index0);
         }
@@ -177,14 +177,14 @@ public class PrintfMsg extends net.tinyos.message.Message {
      * Return the total size, in bytes, of the array 'buffer'
      */
     public static int totalSize_buffer() {
-        return (720 / 8);
+        return (1760 / 8);
     }
 
     /**
      * Return the total size, in bits, of the array 'buffer'
      */
     public static int totalSizeBits_buffer() {
-        return 720;
+        return 1760;
     }
 
     /**
@@ -212,7 +212,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
      * Return the number of elements in the array 'buffer'
      */
     public static int numElements_buffer() {
-        return 90;
+        return 220;
     }
 
     /**
@@ -220,7 +220,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
      * for the given dimension.
      */
     public static int numElements_buffer(int dimension) {
-      int array_dims[] = { 90,  };
+      int array_dims[] = { 220,  };
         if (dimension < 0 || dimension >= 1) throw new ArrayIndexOutOfBoundsException();
         if (array_dims[dimension] == 0) throw new IllegalArgumentException("Array dimension "+dimension+" has unknown size");
         return array_dims[dimension];
@@ -242,7 +242,7 @@ public class PrintfMsg extends net.tinyos.message.Message {
      * Read the array 'buffer' as a String
      */
     public String getString_buffer() { 
-         char carr[] = new char[Math.min(net.tinyos.message.Message.MAX_CONVERTED_STRING_LENGTH,90)];
+         char carr[] = new char[Math.min(net.tinyos.message.Message.MAX_CONVERTED_STRING_LENGTH,220)];
          int i;
          for (i = 0; i < carr.length; i++) {
              if ((char)getElement_buffer(i) == (char)0) break;

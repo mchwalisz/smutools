@@ -93,17 +93,17 @@ implementation {
     int16_t remaining;
     int8_t rssi;
     uint32_t now = call Alarm.getNow();
+    bool overflow = FALSE;
 
     atomic {
-      if (now>32767 && now > tlast + SAMPLING_PERIOD + 1) {
-        call Leds.led0On();
-        return;
-      }
+      if (now>32767 && now > tlast + SAMPLING_PERIOD + 1)
+        overflow = TRUE;
 
       rssi = readRssiFast() - 45;
+      if (overflow)
+        rssi = 100; // this indicates jitter in the sampling process (which should never happen!)
 
       call CC2420Power.rfOff();
-/*      call CC2420Power.setChannel(fvector[findex++]);*/
       call CC2420Power.setFrequency(fvector[findex++]);
       call CC2420Power.rxOn();
 

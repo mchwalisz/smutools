@@ -9,7 +9,8 @@ RF power averaged over a 192 microsec interval on a given frequency. By default
 the sampling period is 64/32768 sec (roughly 2 ms), the bandwidth (IEEE
 802.15.4 channel width) is 2 MHz (fixed). This app is only available for the
 TelosB (Tmote Sky) platform. During operation, all LEDs should remain off. The
-RED LED will indicate an error. 
+RED LED will indicate an error; also, in case of an error the resulting RSSI
+sampling will be set to a value of 100 dBm. 
 
 Timing example: if FREQUENCY_VECTOR is defined as {2400, 2410, 2415} (in
 spectrummonitor.h), then the radio will continously, round robin sweep over the
