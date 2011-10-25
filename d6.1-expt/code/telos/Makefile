@@ -13,3 +13,10 @@ include $(MAKERULES)
 twist_trace_parser: twist_trace_parser.c $(MSGS)
 	gcc $(GCCFLAGS) -I$(C_INCLUDE) -g -O2 twist_trace_parser.c -c -o twist_trace_parser.o
 	gcc $(GCCFLAGS) -I$(C_INCLUDE) -g -O2 -o twist_trace_parser  twist_trace_parser.o $(C_INCLUDE)/libmote.a
+
+clean: clean-twist
+
+clean-twist:
+	-rm -f twist_trace_parser
+
+.PHONY: clean clean-twist
