@@ -5,7 +5,6 @@ NEW_FREQUENCY_VECTOR=$2
 USER_DESCRIPTION=$3
 SF_PORT=`expr ${USBDEV: -1} + 9002`
 SF_CMD="$TOSDIR/../support/sdk/c/sf/sf $SF_PORT $USBDEV 115200"
-CLASSPATH=.:./tinyos.jar:$CLASSPATH
 #SF_CMD="java net.tinyos.sf.SerialForwarder -comm serial@$USBDEV:115200 -no-gui -port $SF_PORT"
 
 
@@ -84,18 +83,20 @@ for (( i=0; i<=(${#TEST_VECTOR}+1)-5; i+=5 ))
   done
 
 export FREQUENCY_VECTOR=\{$NEW_FREQUENCY_VECTOR\};
+
+
 SFPID=`ps aux | grep support/sdk/c/sf/sf | grep $USBDEV | awk '{print $2}'`
 #SFPID=`ps aux | grep net.tinyos.sf.SerialForwarder | grep $USBDEV | awk '{print $2}'`
 if [[ -n $SFPID ]]
 then
   echo Killing previous serialforwarder with PID $SFPID >&2
-  kill $SFPID
+  kill -9 $SFPID
 fi
 
 # make a temporary copy and install from there (so we don't interfere with other processes)
-pushd .
+pushd . >&2
 TMPDIR=`mktemp -d`
-echo $TMPDIR
+echo $TMPDIR >&2
 cp Makefile $TMPDIR
 cp *.nc $TMPDIR
 cp *.c $TMPDIR
@@ -106,7 +107,7 @@ cp -r net/ $TMPDIR
 cd $TMPDIR
 make telosb install bsl,$USBDEV >&2
 rm -rf $TMPDIR
-popd
+popd >&2
 
 echo starting serialforwarder: $SF_CMD >&2
 $SF_CMD &
@@ -120,5 +121,6 @@ echo \# $INSTALL_TIME
 echo \# Frequencies \(in MHz\): $NEW_FREQUENCY_VECTOR
 echo "# Data format: one line per sweep (scanning all frequencies in the order above), every entry represents "
 echo "#              the average RF power (in dBm) measured on a frequency over a period of 192 microseconds."
+CLASSPATH=.:./tinyos.jar:$CLASSPATH
 java net.tinyos.tools.PrintfClient -comm sf@localhost:$SF_PORT
 
