@@ -105,7 +105,7 @@ cp -r twist_trace_parser* $TMPDIR
 cp -r cc2420/ $TMPDIR
 cp -r net/ $TMPDIR
 cd $TMPDIR
-make telosb install bsl,$USBDEV >&2
+make telosb install bsl,$USBDEV >&2 || { echo "command failed" >&2; make telosb install bsl,$USBDEV >&2; } 
 rm -rf $TMPDIR
 popd >&2
 
