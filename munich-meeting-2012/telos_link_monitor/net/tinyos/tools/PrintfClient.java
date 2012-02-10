@@ -57,11 +57,12 @@ public class PrintfClient implements MessageListener {
 
   public void messageReceived(int to, Message message) {
     long timestamp = System.currentTimeMillis();
-    System.out.print(timestamp/1000 + "." + String.format("%03d", timestamp%1000) + " ");
     PrintfMsg msg = (PrintfMsg)message;
     for(int i=0; i<msg.totalSize_buffer(); i++) {
       char nextChar = (char)(msg.getElement_buffer(i));
-      if(nextChar != 0)
+      if(nextChar == '\n')
+        System.out.print("\n" + timestamp/1000 + "." + String.format("%03d", timestamp%1000) + " ");
+      else if(nextChar != 0)
         System.out.print(nextChar);
     }
   }
