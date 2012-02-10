@@ -54,7 +54,10 @@ Traces:
   To get the traces of a node (sender/receiver) you need to start the
   TinyOS java PrintfClient:
 
-  $ java net.tinyos.tools.PrintfClient -comm serial@/dev/ttyUSB0:115200
+  $ CLASSPATH=X:$CLASSPATH; java net.tinyos.tools.PrintfClient -comm serial@/dev/ttyUSB0:115200
+  (where X should point to the "telos_link_monitor/" directory!
+   e.g. "CLASSPATH=.:$CLASSPATH;" if you already are in this directory)
+   
 
   Trace format: the sender will print one line per transmitted packets, each
   line looks similar to this one: 
