@@ -175,6 +175,9 @@ generic module LQMP(uint8_t LQM_VARIANT, uint8_t LQM_ROLE) {
       return;
     }
     m_traceInfo->nodeID = TOS_NODE_ID;      
+#if defined(_LQM_RECEIVER)
+    m_traceInfo->nodeID = m_destId[0];      
+#endif
     m_traceInfo->role = LQM_ROLE;
     m_traceInfo->paLevel = PA_LEVEL;
     m_traceInfo->channel = RADIO_CHANNEL;
