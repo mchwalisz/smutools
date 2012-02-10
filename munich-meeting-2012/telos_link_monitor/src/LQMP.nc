@@ -232,8 +232,8 @@ generic module LQMP(uint8_t LQM_VARIANT, uint8_t LQM_ROLE) {
           call SerialPacket.getPayload(m_serialMsgPtr, sizeof(lqm_trace_info_t)), 
           sizeof(lqm_trace_info_t), AM_LQM_TRACE_INFO);
       */
-      printf("# COMPILE_TIME: %s\n# NodeId: %u\n# Role: %s%s\n# PA_LEVEL: %u\n# Channel %u\n# Packet (MPDU) size: %u byte\n# No. packets to be transmitted: %lu\n",
-          COMPILE_TIME, trace_info->nodeID, (trace_info->role==0)?"receiver":"sender", (LQM_VARIANT == LQM_UNICAST)?" (unicast)":" (broadcast)",
+      printf("# COMPILE_TIME: %s\n# NodeId: %u\n# Node FTDI chip ID: %s\n# Role: %s%s\n# PA_LEVEL: %u\n# Channel %u\n# Packet (MPDU) size: %u byte\n# No. packets to be transmitted: %lu\n",
+          COMPILE_TIME, trace_info->nodeID, FTDI_CHIP_ID, (trace_info->role==0)?"receiver":"sender", (LQM_VARIANT == LQM_UNICAST)?" (unicast)":" (broadcast)",
           trace_info->paLevel, trace_info->channel, trace_info->mpduSize, trace_info->numPackets);
       printfflush();
       
