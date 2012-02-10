@@ -8,6 +8,8 @@ enum {
    * after booting, before they start exchanging packets. In order 
    * not miss the first packets the receiver will start listening
    * already at (INIT_DELAY / 2) seconds after it has booted.
+   * While a node is waiting it will toggle all three LEDs about
+   * once per second.
    *
    * If INIT_DELAY = 0 then the measurement is started by pressing the
    * user buttons (-> make sure you first press the button on the receiver)
