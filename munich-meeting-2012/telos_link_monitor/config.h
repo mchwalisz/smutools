@@ -19,7 +19,7 @@ enum {
   PACKET_TX_PERIOD = 50,
 
   /* IEEE 802.15.4 channel (11..26) */
-  RADIO_CHANNEL = 11,
+  RADIO_CHANNEL = 12,
 
   /* Transmission power (PA_LEVEL register, see CC2420 Datasheet):
    *
@@ -42,7 +42,7 @@ enum {
 
   /* Total number of DATA packets transmitted by the sender to *every*
    * receiver (if you choose the broadcast option then this is the total
-   * number of pacjkets transmitted). 
+   * number of packets transmitted). 
    * If NUM_PACKETS = 0 then the sender will send infinitely many.
    */
   NUM_PACKETS = 0,

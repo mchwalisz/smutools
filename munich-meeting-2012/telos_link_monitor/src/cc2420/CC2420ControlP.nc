@@ -96,6 +96,8 @@ implementation {
   uint16_t m_pan;
   
   uint16_t m_short_addr;
+
+  uint16_t __m_short_addr[] = RECEIVER_IDS;
   
   bool m_sync_busy;
   
@@ -128,7 +130,7 @@ implementation {
 
     m_short_addr = TOS_NODE_ID;
   #if defined(_LQM_RECEIVER)
-    m_short_addr = _LQM_RECEIVER;
+    m_short_addr = __m_short_addr[0];
   #endif
     m_pan = PAN_ID;
     m_channel = RADIO_CHANNEL;
