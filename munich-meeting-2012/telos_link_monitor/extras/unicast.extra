@@ -1,0 +1,5 @@
+ifeq ($(UNICAST),)
+$(error Error: you forgot the address of the receiver of the unicast messages! For a *sender* do e.g. "make <platform> unicast.123,234" to send packets to nodes 123 and 234 (alternating). For a *receiver* do e.g. "make <platform> unicast.123" to assign the address 123 to the node.)
+endif
+CFLAGS += -D_LQM_UNICAST
+CFLAGS += -DRECEIVER_IDS={$(UNICAST)}
