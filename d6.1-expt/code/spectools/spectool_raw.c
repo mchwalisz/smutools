@@ -210,11 +210,12 @@ int main(int argc, char *argv[]) {
 			exit(1);
 		}
 
-		printf("Found %d spectool devices...\n", ndev);
+		printf("# Found %d spectool devices...\n", ndev);
 
 		if ( scan_dev == -1 ) {
 		    for (x = 0; x < ndev; x++) {
-			printf("Initializing WiSPY device %s id %u\n", 
+			//TODO: Change device ID to something meaningfull
+			printf("# Initializing WiSPY device %s id %u\n", 
 				   list.list[x].name, list.list[x].device_id);
 
 			pi = (spectool_phy *) malloc(SPECTOOL_PHY_SIZE);
@@ -243,8 +244,9 @@ int main(int argc, char *argv[]) {
 		} else {
 		        x = scan_dev;
 
-			printf("Initializing WiSPY device %s id %u\n", 
-				   list.list[x].name, list.list[x].device_id);
+			//TODO: Change device ID to something meaningfull
+			printf("# Initializing WiSPY device %s id %u\n", 
+				   list.list[x].name, list.list[x].device_id); 
 
 			pi = (spectool_phy *) malloc(SPECTOOL_PHY_SIZE);
 			pi->next = devs;
@@ -402,7 +404,7 @@ int main(int argc, char *argv[]) {
 				r = spectool_phy_poll(di);
 
 				if ((r & SPECTOOL_POLL_CONFIGURED)) {
-					printf("Configured device %u (%s)\n", 
+					printf("# Configured device %u (%s)\n", 
 						   spectool_phy_getdevid(di), 
 						   spectool_phy_getname(di),
 						   di->device_spec->num_sweep_ranges);
@@ -415,7 +417,7 @@ int main(int argc, char *argv[]) {
 						continue;
 					}
 
-					printf("    %d%s-%d%s @ %0.2f%s, %d samples\n", 
+					printf("#    %d%s-%d%s @ %0.2f%s, %d samples\n", 
 						   ran->start_khz > 1000 ? 
 						   ran->start_khz / 1000 : ran->start_khz,
 						   ran->start_khz > 1000 ? "MHz" : "KHz",

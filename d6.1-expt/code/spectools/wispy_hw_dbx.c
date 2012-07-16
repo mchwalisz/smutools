@@ -108,7 +108,8 @@
 #define WISPYDBx_USB_NUM_SAMPLES_24_FAST		150
 
 /* 900x */
-#define WISPY900x_USB_DEF_STARTKHZ		902000
+#define WISPY900x_USB_DEF_STARTKHZ2		902000
+#define WISPY900x_USB_DEF_STARTKHZ		862000
 #define WISPY900x_USB_DEF_RESHZ			101807
 #define WISPY900x_USB_DEF_FILTERHZ		125000
 #define WISPY900x_USB_DEF_SAMPLESPOINT	4
@@ -330,9 +331,9 @@ void wispy24i_add_supportedranges(int *num_ranges, spectool_sample_sweep **range
 }
 
 void wispy900x_add_supportedranges(int *num_ranges, spectool_sample_sweep **ranges) {
-	*ranges = (spectool_sample_sweep *) malloc(sizeof(spectool_sample_sweep) * 1);
+	*ranges = (spectool_sample_sweep *) malloc(sizeof(spectool_sample_sweep) * 2);
 
-	*num_ranges = 1;
+	*num_ranges = 2;
 
 	(*ranges)[0].name = strdup("900MHz ISM");
 	(*ranges)[0].num_samples = WISPY900x_USB_NUM_SAMPLES;
@@ -349,6 +350,22 @@ void wispy900x_add_supportedranges(int *num_ranges, spectool_sample_sweep **rang
 	(*ranges)[0].res_hz = WISPY900x_USB_DEF_RESHZ;
 	(*ranges)[0].samples_per_point = WISPY900x_USB_DEF_SAMPLESPOINT;
 	(*ranges)[0].filter_bw_hz = WISPY900x_USB_DEF_FILTERHZ;
+	
+	(*ranges)[1].name = strdup("868MHz ISM");
+	(*ranges)[1].num_samples = WISPY900x_USB_NUM_SAMPLES;
+
+	/* common */
+	(*ranges)[1].amp_offset_mdbm = WISPYDBx_USB_OFFSET_MDBM;
+	(*ranges)[1].amp_res_mdbm = WISPYDBx_USB_RES_MDBM;
+	(*ranges)[1].rssi_max = WISPYDBx_USB_RSSI_MAX;
+
+	(*ranges)[1].start_khz = WISPY900x_USB_DEF_STARTKHZ2;
+	(*ranges)[1].end_khz = 
+		WISPY900x_USB_DEF_STARTKHZ2 + ((WISPY900x_USB_NUM_SAMPLES *
+									   WISPY900x_USB_DEF_RESHZ) / 1000);
+	(*ranges)[1].res_hz = WISPY900x_USB_DEF_RESHZ;
+	(*ranges)[1].samples_per_point = WISPY900x_USB_DEF_SAMPLESPOINT;
+	(*ranges)[1].filter_bw_hz = WISPY900x_USB_DEF_FILTERHZ;
 }
 
 void wispydbx_add_supportedranges(int *num_ranges, spectool_sample_sweep **ranges) {
