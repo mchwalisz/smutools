@@ -103,15 +103,15 @@ implementation {
       if (overflow)
         rssi = 100; // this indicates jitter in the sampling process (which should never happen!)
 
-      call CC2420Power.rfOff();
-      call CC2420Power.setFrequency(fvector[findex++]);
-      call CC2420Power.rxOn();
-
-      if (findex == NUM_FREQUENCIES)
+      if (findex == NUM_FREQUENCIES-1)
         numwritten = snprintf((char*) &m_currentTrace->buffer[m_traceIndex], MAX_STRLEN, "%d\n", rssi);
       else
         numwritten = snprintf((char*) &m_currentTrace->buffer[m_traceIndex], MAX_STRLEN, "%d ", rssi);
-      findex = findex % NUM_FREQUENCIES;
+      findex = (findex+1) % NUM_FREQUENCIES;
+
+      call CC2420Power.rfOff();
+      call CC2420Power.setFrequency(fvector[findex]);
+      call CC2420Power.rxOn();
 
       tlast += SAMPLING_PERIOD;
       if (numwritten <= 0 || (m_traceIndex + numwritten) > PRINTF_MSG_LENGTH)
