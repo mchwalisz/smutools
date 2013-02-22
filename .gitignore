@@ -1,2 +1,5 @@
 # Ignore data
 data*
+
+# Scons generated files
+.sconsign.dblite
