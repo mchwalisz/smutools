@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WiSpyMonitorMain</class>
+ <widget class="QMainWindow" name="WiSpyMonitorMain">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>729</width>
+    <height>573</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>WiSpy Monitor</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QwtPlot" name="qwtPlotSpectrogram">
+        <property name="minimumSize">
+         <size>
+          <width>610</width>
+          <height>250</height>
+         </size>
+        </property>
+        <property name="propertiesDocument" stdset="0">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QwtPlot" name="qwtPlotPower">
+        <property name="minimumSize">
+         <size>
+          <width>610</width>
+          <height>250</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="pushButtonStart">
+          <property name="text">
+           <string>Start</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonStop">
+          <property name="text">
+           <string>Stop</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonTest">
+          <property name="text">
+           <string>Test</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>729</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QwtPlot</class>
+   <extends>QFrame</extends>
+   <header>qwt_plot.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButtonTest</sender>
+   <signal>clicked()</signal>
+   <receiver>WiSpyMonitorMain</receiver>
+   <slot>WiSpyTest()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>717</x>
+     <y>128</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>586</x>
+     <y>170</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonStop</sender>
+   <signal>clicked()</signal>
+   <receiver>WiSpyMonitorMain</receiver>
+   <slot>WiSpyStop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>639</x>
+     <y>79</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>541</x>
+     <y>98</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonStart</sender>
+   <signal>clicked()</signal>
+   <receiver>WiSpyMonitorMain</receiver>
+   <slot>WiSpyStart()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>698</x>
+     <y>57</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>538</x>
+     <y>67</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>WiSpyStart()</slot>
+  <slot>WiSpyStop()</slot>
+  <slot>WiSpyTest()</slot>
+ </slots>
+</ui>
