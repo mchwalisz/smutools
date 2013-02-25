@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>729</width>
+    <width>756</width>
     <height>573</height>
    </rect>
   </property>
@@ -14,67 +14,213 @@
    <string>WiSpy Monitor</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
+    <property name="leftMargin">
+     <number>9</number>
+    </property>
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="verticalPlts">
       <item>
-       <widget class="QwtPlot" name="qwtPlotSpectrogram">
+       <widget class="QLabel" name="labelPlotPower">
         <property name="minimumSize">
          <size>
           <width>610</width>
           <height>250</height>
          </size>
         </property>
-        <property name="propertiesDocument" stdset="0">
-         <string/>
+        <property name="text">
+         <string>Power Plot Placeholder
+labelPlotPower
+qwtPlotPower</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QwtPlot" name="qwtPlotPower">
+       <widget class="QLabel" name="labelPlotSpectrogram">
         <property name="minimumSize">
          <size>
           <width>610</width>
           <height>250</height>
          </size>
+        </property>
+        <property name="text">
+         <string>Spectrogram Plot Placeholder
+labelPlotSpectr
+qwtPlotSpectrogram</string>
         </property>
        </widget>
       </item>
      </layout>
     </item>
-    <item row="0" column="1">
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item row="0" column="2">
+     <layout class="QVBoxLayout" name="verticalBtns">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <widget class="QPushButton" name="pushButtonStart">
+        <property name="maximumSize">
+         <size>
+          <width>127</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonStop">
+        <property name="maximumSize">
+         <size>
+          <width>127</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Stop</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonTest">
+        <property name="maximumSize">
+         <size>
+          <width>127</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonGoToEnd">
+        <property name="maximumSize">
+         <size>
+          <width>127</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Go to end of the current file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Go to End</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMaximumSize</enum>
+        </property>
         <item>
-         <widget class="QPushButton" name="pushButtonStart">
+         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Start</string>
+           <string>Timer:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButtonStop">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Stop</string>
+           <string>0</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButtonTest">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Test</string>
+           <string>ms</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>PushButton</string>
+       <widget class="QSlider" name="hSliderTimer">
+        <property name="maximumSize">
+         <size>
+          <width>127</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="maximum">
+         <number>2000</number>
+        </property>
+        <property name="singleStep">
+         <number>50</number>
+        </property>
+        <property name="pageStep">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxEoF">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>EoF</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>History size:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelHistorySize">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <spacer name="verticalSpacer">
@@ -98,20 +244,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>729</width>
+     <width>756</width>
      <height>25</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QwtPlot</class>
-   <extends>QFrame</extends>
-   <header>qwt_plot.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -121,12 +260,12 @@
    <slot>WiSpyTest()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>717</x>
-     <y>128</y>
+     <x>708</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
-     <x>586</x>
-     <y>170</y>
+     <x>668</x>
+     <y>354</y>
     </hint>
    </hints>
   </connection>
@@ -137,12 +276,12 @@
    <slot>WiSpyStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>639</x>
-     <y>79</y>
+     <x>705</x>
+     <y>86</y>
     </hint>
     <hint type="destinationlabel">
-     <x>541</x>
-     <y>98</y>
+     <x>673</x>
+     <y>315</y>
     </hint>
    </hints>
   </connection>
@@ -157,8 +296,56 @@
      <y>57</y>
     </hint>
     <hint type="destinationlabel">
-     <x>538</x>
-     <y>67</y>
+     <x>672</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonGoToEnd</sender>
+   <signal>clicked()</signal>
+   <receiver>WiSpyMonitorMain</receiver>
+   <slot>WiSpyGoToEnd()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>712</x>
+     <y>158</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>669</x>
+     <y>395</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hSliderTimer</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>732</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>716</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hSliderTimer</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>WiSpyMonitorMain</receiver>
+   <slot>setTimer(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>674</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>677</x>
+     <y>234</y>
     </hint>
    </hints>
   </connection>
@@ -167,5 +354,7 @@
   <slot>WiSpyStart()</slot>
   <slot>WiSpyStop()</slot>
   <slot>WiSpyTest()</slot>
+  <slot>WiSpyGoToEnd()</slot>
+  <slot>setTimer(int)</slot>
  </slots>
 </ui>
