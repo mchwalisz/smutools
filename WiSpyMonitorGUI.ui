@@ -177,7 +177,7 @@ qwtPlotSpectrogram</string>
          </size>
         </property>
         <property name="maximum">
-         <number>2000</number>
+         <number>1000</number>
         </property>
         <property name="singleStep">
          <number>10</number>
@@ -238,6 +238,13 @@ qwtPlotSpectrogram</string>
           </property>
           <property name="text">
            <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>s</string>
           </property>
          </widget>
         </item>
