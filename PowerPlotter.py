@@ -82,8 +82,8 @@ class PowerPlotter(Qwt.QwtPlot):
             freqList = fReader.frequencyList
         # Update scale
         self.setAxisScale(Qwt.QwtPlot.xBottom, freqList[0], freqList[-1])
-        self.dBmMin = min(nanmin(fReader.sweepCurrent), self.dBmMin)
-        self.dBmMax = max(nanmax(fReader.sweepCurrent), self.dBmMax)
+        self.dBmMin = min(nanmin(fReader.sweepMin), self.dBmMin)
+        self.dBmMax = max(nanmax(fReader.sweepMax), self.dBmMax)
         self.setAxisScale(Qwt.QwtPlot.yLeft, self.dBmMin, self.dBmMax)
         self.curveCurrent.setData(freqList, fReader.sweepCurrent)
         self.curveAvg.setData(freqList, fReader.sweepAvg)
