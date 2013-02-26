@@ -47,8 +47,12 @@ class PlotFileReader():
     # def getData(self)
 
     def getLineFast(self):
-        fileWhere = self.fileData.tell()
-        line = self.fileData.readline()
+        try:
+            fileWhere = self.fileData.tell()
+            line = self.fileData.readline()
+        except Exception, e:
+            self.log.error(e)
+            return
         # Check for new line
         if (not line) or (not line.endswith('\n')):
             self.fileData.seek(fileWhere)
@@ -132,4 +136,36 @@ class PlotFileReader():
 
     # def detectFrequencyList(...)
 
+    def closeFile(self):
+        self.fileData.close()
+        self.log.debug("Closing file: %s" % (self.fileName))
+
+    # def closeFile
+
 # class PlotFileReader
+
+
+def main(args):
+    log = logging.getLogger("measurement")
+    log.setLevel(logging.DEBUG)
+    ch = logging.StreamHandler()
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    log.addHandler(ch)
+    pfr = PlotFileReader("/home/chwalisz/" +
+            "Code/tkncrew.git/code/sensing_wrapper/" +
+            "data_wispy_0_0.txt")
+    print(pfr.frequencyList)
+    while not pfr.fileEnd:
+        pfr.getData()
+    print(pfr.sweepCurrent)
+    pfr.closeFile()
+    pfr.getData()
+
+
+# def main
+
+if __name__ == '__main__':
+    import sys
+    main(sys.argv)

@@ -79,12 +79,18 @@ class WiSpyMainWindow(QtGui.QMainWindow):
 
     # def setHistorySize
 
+    def closeEvent(self, e):
+        self.log.debug("Exit registered")
+        self.fileReader.closeFile()
+    # def close
+
 
 def main(args):
     log = logging.getLogger("measurement")
     log.setLevel(logging.DEBUG)
     ch = logging.StreamHandler()
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
     log.addHandler(ch)
     app = QtGui.QApplication(args)
