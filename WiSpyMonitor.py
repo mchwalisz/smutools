@@ -19,7 +19,7 @@ class WiSpyMainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
         super(WiSpyMainWindow, self).__init__(parent)
         uic.loadUi("WiSpyMonitorGUI.ui", self)
-        self.log = logging.getLogger("WiSpyMonitor")
+        self.log = logging.getLogger("measurement.WiSpyMonitor")
         # connect myaction_logic to myaction.toggled signal
         # self.myaction.toggled.connect(self.myaction_slot)
         #self.verticalLayout_2.removeWidget()
@@ -44,28 +44,28 @@ class WiSpyMainWindow(QtGui.QMainWindow):
     timerID = None
 
     def WiSpyStart(self):
-        print "WiSpyStart"
+        self.log.debug("WiSpyStart")
 
     def WiSpyStop(self):
-        print "WiSpyStop"
-        self.qwtPlotSpectrogram.setCanvasBackground(Qt.Qt.white)
+        self.log.debug("WiSpyStop")
 
     def WiSpyTest(self):
-        print "WiSpyTest"
-        self.qwtPlotSpectrogram.setCanvasBackground(Qt.Qt.red)
+        self.log.debug("WiSpyTest")
+        self.log.debug(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])
 
     def WiSpyGoToEnd(self):
+        self.log.debug("WiSpyGoToEnd")
         self.fileReader.goToEnd()
 
     def timerEvent(self, e):
-        self.fileReader.getLine()
+        self.fileReader.getData()
         if not self.fileReader.fileEnd:
             self.qwtPlotPower.updatePlot(self.fileReader)
         self.checkBoxEoF.setChecked(self.fileReader.fileEnd)
-        self.labelHistorySize.setNum(len(self.fileReader.sweepPowers))
+        self.labelHistorySize.setNum(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])
 
     def setTimer(self, val):
-        self.log.debug("setTimer fired: val = %i" % (val))
+        self.log.debug("setTimer val = %i" % (val))
         if self.timerID is not None:
             self.killTimer(self.timerID)
         if val == 0:
@@ -73,9 +73,15 @@ class WiSpyMainWindow(QtGui.QMainWindow):
         else:
             self.timerID = self.startTimer(val)
 
+    def setHistorySize(self, val):
+        self.log.debug("setHistorySize val = %i" % (val))
+        self.fileReader.historySize = val
+
+    # def setHistorySize
+
 
 def main(args):
-    log = logging.getLogger("WiSpyMonitor")
+    log = logging.getLogger("measurement")
     log.setLevel(logging.DEBUG)
     ch = logging.StreamHandler()
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
