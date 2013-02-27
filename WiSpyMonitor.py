@@ -62,6 +62,7 @@ class WiSpyMainWindow(QtGui.QMainWindow):
         self.fileReader.getData()
         if not self.fileReader.fileEnd:
             self.qwtPlotPower.updatePlot(self.fileReader)
+            self.qwtPlotSpectrogram.updatePlot(self.fileReader)
         self.checkBoxEoF.setChecked(self.fileReader.fileEnd)
         self.labelHistorySize.setNum(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])
 

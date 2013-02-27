@@ -8,51 +8,29 @@ __copyright__ = "Copyright (c) 2013, Technische Universität Berlin"
 __version__ = "1.0.0"
 __email__ = "chwalisz@tkn.tu-berlin.de"
 
-from PyQt4 import Qt
-import PyQt4.Qwt5 as Qwt
-from PyQt4.Qwt5.anynumpy import *
+import numpy as np
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 import logging
 
 
-class PowerPlotter(Qwt.QwtPlot):
+class PowerPlotter(FigureCanvas):
     """docstring for PowerPlotter"""
     def __init__(self, *args):
-        Qwt.QwtPlot.__init__(self, *args)
-
-        self.setCanvasBackground(Qt.Qt.white)
-        self.alignScales()
-
-        self.setTitle("Power Spectrum Density")
-        self.insertLegend(Qwt.QwtLegend(), Qwt.QwtPlot.BottomLegend)
-
-        self.curveCurrent = Qwt.QwtPlotCurve("Current")
-        self.curveCurrent.attach(self)
-        self.curveCurrent.setPen(Qt.QPen(Qt.Qt.red))
-
-        self.curveAvg = Qwt.QwtPlotCurve("Average")
-        self.curveAvg.attach(self)
-        self.curveAvg.setPen(Qt.QPen(Qt.Qt.blue))
-
-        self.curveMin = Qwt.QwtPlotCurve("Minimum")
-        self.curveMin.attach(self)
-        self.curveMin.setPen(Qt.QPen(Qt.Qt.magenta))
-
-        self.curveMax = Qwt.QwtPlotCurve("Maximum")
-        self.curveMax.attach(self)
-        self.curveMax.setPen(Qt.QPen(Qt.Qt.green))
-
-        # self.curveL.setSymbol(Qwt.QwtSymbol(Qwt.QwtSymbol.Ellipse,
-        #                                 Qt.QBrush(),
-        #                                 Qt.QPen(Qt.Qt.yellow),
-        #                                 Qt.QSize(7, 7)))
-        # mY = Qwt.QwtPlotMarker()
-        # mY.setLabelAlignment(Qt.Qt.AlignRight | Qt.Qt.AlignTop)
-        # mY.setLineStyle(Qwt.QwtPlotMarker.HLine)
-        # mY.setYValue(0.0)
-        # mY.attach(self)
-
-        self.setAxisTitle(Qwt.QwtPlot.xBottom, "Frequency")
-        self.setAxisTitle(Qwt.QwtPlot.yLeft, "Power")
+        self.figure = Figure()
+        FigureCanvas.__init__(self, self.figure)
+        self.axes = self.figure.add_subplot(111)
+        self.curveCurrent, = self.axes.plot([], [], label="Current")
+        self.curveAvg, = self.axes.plot([], [], label="Average")
+        self.curveMax, = self.axes.plot([], [], label="Maximum")
+        self.curveMin, = self.axes.plot([], [], label="Minimum")
+        leg = self.axes.legend(loc='upper right', bbox_to_anchor=(1.1, 1))
+        frame = leg.get_frame()
+        frame.set_facecolor('0.95')    # set the frame face color to light gray
+        for t in leg.get_texts():
+            t.set_fontsize('x-small')    # the legend text fontsize
+        self.axes.autoscale(enable=False, axis='both')
+        self.figure.canvas.draw()
 
         self.log = logging.getLogger("measurement.PowerPlotter")
 
@@ -60,20 +38,6 @@ class PowerPlotter(Qwt.QwtPlot):
 
     dBmMin = float("Inf")
     dBmMax = -float("Inf")
-
-    def alignScales(self):
-        self.canvas().setFrameStyle(Qt.QFrame.Box | Qt.QFrame.Plain)
-        self.canvas().setLineWidth(1)
-        for i in range(Qwt.QwtPlot.axisCnt):
-            scaleWidget = self.axisWidget(i)
-            if scaleWidget:
-                scaleWidget.setMargin(0)
-            scaleDraw = self.axisScaleDraw(i)
-            if scaleDraw:
-                scaleDraw.enableComponent(
-                    Qwt.QwtAbstractScaleDraw.Backbone, False)
-
-    # alignScales()
 
     def updatePlot(self, fReader):
         if fReader.sweepCurrent is None:
@@ -85,14 +49,14 @@ class PowerPlotter(Qwt.QwtPlot):
         else:
             freqList = fReader.frequencyList
         # Update scale
-        self.setAxisScale(Qwt.QwtPlot.xBottom, freqList[0], freqList[-1])
-        self.dBmMin = min(nanmin(fReader.sweepMin), self.dBmMin)
-        self.dBmMax = max(nanmax(fReader.sweepMax), self.dBmMax)
-        self.setAxisScale(Qwt.QwtPlot.yLeft, self.dBmMin, self.dBmMax)
-        self.curveCurrent.setData(freqList, fReader.sweepCurrent)
-        self.curveAvg.setData(freqList, fReader.sweepAvg)
-        self.curveMax.setData(freqList, fReader.sweepMax)
-        self.curveMin.setData(freqList, fReader.sweepMin)
-        self.replot()
+        self.dBmMin = min(np.nanmin(fReader.sweepMin), self.dBmMin)
+        self.dBmMax = max(np.nanmax(fReader.sweepMax), self.dBmMax)
+        self.axes.set_ylim([self.dBmMin, self.dBmMax])
+        self.axes.set_xlim([freqList[0], freqList[-1]])
+        self.curveCurrent.set_data(freqList, fReader.sweepCurrent)
+        self.curveAvg.set_data(freqList, fReader.sweepAvg)
+        self.curveMax.set_data(freqList, fReader.sweepMax)
+        self.curveMin.set_data(freqList, fReader.sweepMin)
+        self.figure.canvas.draw()
 
 # class PowerPlotter
