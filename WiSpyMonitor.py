@@ -35,11 +35,12 @@ class WiSpyMainWindow(QtGui.QMainWindow):
         self.labelPlotSpectrogram.close()
 
         self.fileReader = PlotFileReader.PlotFileReader("/home/chwalisz/" +
-            "Code/tkncrew.git/code/sensing_wrapper/" +
-            "data_wispy_0_0.txt")
+                                                        "Code/tkncrew.git/code/sensing_wrapper/" +
+                                                        "data_wispy_0_0.txt")
 
         #self.timerID = self.startTimer(20)
         self.hSliderTimer.setValue(300)
+        self.hSliderHistory.setValue(30)
 
     timerID = None
 
@@ -81,6 +82,7 @@ class WiSpyMainWindow(QtGui.QMainWindow):
 
     def closeEvent(self, e):
         self.log.debug("Exit registered")
+        self.killTimer(self.timerID)
         self.fileReader.closeFile()
     # def close
 
