@@ -11,6 +11,7 @@ __email__ = "chwalisz@tkn.tu-berlin.de"
 from PyQt4 import Qt
 import PyQt4.Qwt5 as Qwt
 from PyQt4.Qwt5.anynumpy import *
+import logging
 
 
 class PowerPlotter(Qwt.QwtPlot):
@@ -53,6 +54,8 @@ class PowerPlotter(Qwt.QwtPlot):
         self.setAxisTitle(Qwt.QwtPlot.xBottom, "Frequency")
         self.setAxisTitle(Qwt.QwtPlot.yLeft, "Power")
 
+        self.log = logging.getLogger("measurement.PowerPlotter")
+
     # __init__()
 
     dBmMin = float("Inf")
@@ -74,9 +77,10 @@ class PowerPlotter(Qwt.QwtPlot):
 
     def updatePlot(self, fReader):
         if fReader.sweepCurrent is None:
-            print("Missing value")
+            self.log.warning("Missing data to plot")
             return
         if fReader.frequencyList is None:
+            self.log.warning("Missing frequency list")
             freqList = range(fReader.sweepCurrent.shape[0])
         else:
             freqList = fReader.frequencyList
