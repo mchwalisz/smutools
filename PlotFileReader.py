@@ -8,7 +8,7 @@ __copyright__ = "Copyright (c) 2013, Technische Universität Berlin"
 __version__ = "1.0.0"
 __email__ = "chwalisz@tkn.tu-berlin.de"
 
-from PyQt4.Qwt5.anynumpy import *
+import numpy as np
 import logging
 
 
@@ -40,9 +40,9 @@ class PlotFileReader():
         while self.sweepCurrent is None:
             self.getLineFast()
         self.getLineFast()
-        self.sweepAvg = 10 * log10(average(self.sweepPowers, 0))
-        self.sweepMax = 10 * log10(amax(self.sweepPowers, 0))
-        self.sweepMin = 10 * log10(amin(self.sweepPowers, 0))
+        self.sweepAvg = 10 * np.log10(np.average(self.sweepPowers, 0))
+        self.sweepMax = 10 * np.log10(np.amax(self.sweepPowers, 0))
+        self.sweepMin = 10 * np.log10(np.amin(self.sweepPowers, 0))
 
     # def getData(self)
 
@@ -79,23 +79,23 @@ class PlotFileReader():
         if len(data) != len(self.frequencyList):
             self.log.warning("Wrong data length, skipping")
             return
-        self.sweepCurrent = array(data)
+        self.sweepCurrent = np.array(data)
         if self.sweepAll is None:
-            self.sweepAll = array(data)
-            self.sweepPowers = power(10, (array(data) / 10))
+            self.sweepAll = np.array(data)
+            self.sweepPowers = np.power(10, (np.array(data) / 10))
             self.timeStart = timeStamp
             self.timeStamp = timeStamp - self.timeStart
         else:
-            self.sweepAll = vstack(
+            self.sweepAll = np.vstack(
                 [self.sweepAll, self.sweepCurrent])
-            self.sweepPowers = vstack(
-                [self.sweepPowers, power(10, self.sweepCurrent / 10)])
-            self.timeStamp = vstack(
+            self.sweepPowers = np.vstack(
+                [self.sweepPowers, np.power(10, self.sweepCurrent / 10)])
+            self.timeStamp = np.vstack(
                 [self.timeStamp, timeStamp - self.timeStart])
             while self.timeStamp[-1] - self.timeStamp[0] > self.historySize:
-                self.sweepAll = delete(self.sweepAll, 0, 0)
-                self.sweepPowers = delete(self.sweepPowers, 0, 0)
-                self.timeStamp = delete(self.timeStamp, 0, 0)
+                self.sweepAll = np.delete(self.sweepAll, 0, 0)
+                self.sweepPowers = np.delete(self.sweepPowers, 0, 0)
+                self.timeStamp = np.delete(self.timeStamp, 0, 0)
         self.fileEnd = False
 
     # def getLineFast
@@ -116,7 +116,7 @@ class PlotFileReader():
         p = re.compile(restr)
         m = p.match(line)
         if m:
-            frequencyList = linspace(
+            frequencyList = np.linspace(
                 float(m.group('start')),
                 float(m.group('stop')),
                 int(m.group('samples')))
