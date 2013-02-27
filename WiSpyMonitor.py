@@ -13,6 +13,7 @@ import logging
 import PowerPlotter
 import PlotFileReader
 import SpectrogramPlotter
+from time import gmtime, strftime
 
 
 class WiSpyMainWindow(QtGui.QMainWindow):
@@ -41,6 +42,7 @@ class WiSpyMainWindow(QtGui.QMainWindow):
         #self.timerID = self.startTimer(20)
         self.hSliderTimer.setValue(300)
         self.hSliderHistory.setValue(30)
+        self.labelTimeStart.setText(strftime("%Y-%m-%d %H:%M:%S", gmtime(self.fileReader.timeStart)))
 
     timerID = None
 

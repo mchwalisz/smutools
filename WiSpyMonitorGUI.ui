@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>756</width>
+    <width>848</width>
     <height>573</height>
    </rect>
   </property>
@@ -14,48 +14,14 @@
    <string>WiSpy Monitor</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
+   <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
     <property name="leftMargin">
      <number>9</number>
     </property>
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalPlts">
-      <item>
-       <widget class="QLabel" name="labelPlotPower">
-        <property name="minimumSize">
-         <size>
-          <width>610</width>
-          <height>250</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Power Plot Placeholder
-labelPlotPower
-qwtPlotPower</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelPlotSpectrogram">
-        <property name="minimumSize">
-         <size>
-          <width>610</width>
-          <height>250</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Spectrogram Plot Placeholder
-labelPlotSpectr
-qwtPlotSpectrogram</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="2">
+    <item row="0" column="1">
      <layout class="QVBoxLayout" name="verticalBtns">
       <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
+       <enum>QLayout::SetFixedSize</enum>
       </property>
       <item>
        <widget class="QPushButton" name="pushButtonStart">
@@ -115,7 +81,7 @@ qwtPlotSpectrogram</string>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="sizeConstraint">
-         <enum>QLayout::SetMaximumSize</enum>
+         <enum>QLayout::SetFixedSize</enum>
         </property>
         <item>
          <widget class="QLabel" name="label_2">
@@ -170,9 +136,15 @@ qwtPlotSpectrogram</string>
       </item>
       <item>
        <widget class="QSlider" name="hSliderTimer">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
+          <width>210</width>
           <height>16777215</height>
          </size>
         </property>
@@ -207,6 +179,12 @@ qwtPlotSpectrogram</string>
         </property>
         <item>
          <widget class="QLabel" name="label_4">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>History size:</string>
           </property>
@@ -218,7 +196,60 @@ qwtPlotSpectrogram</string>
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Maximum</enum>
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>s</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMaximumSize</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Current size:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -242,7 +273,19 @@ qwtPlotSpectrogram</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="label_6">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>19</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>s</string>
           </property>
@@ -251,16 +294,16 @@ qwtPlotSpectrogram</string>
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider">
+       <widget class="QSlider" name="hSliderHistory">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
+          <width>210</width>
           <height>16777215</height>
          </size>
         </property>
@@ -279,6 +322,46 @@ qwtPlotSpectrogram</string>
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMaximumSize</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>File start:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelTimeStart">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -293,6 +376,40 @@ qwtPlotSpectrogram</string>
       </item>
      </layout>
     </item>
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalPlts">
+      <item>
+       <widget class="QLabel" name="labelPlotPower">
+        <property name="minimumSize">
+         <size>
+          <width>610</width>
+          <height>250</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Power Plot Placeholder
+labelPlotPower
+qwtPlotPower</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelPlotSpectrogram">
+        <property name="minimumSize">
+         <size>
+          <width>610</width>
+          <height>250</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Spectrogram Plot Placeholder
+labelPlotSpectr
+qwtPlotSpectrogram</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -300,13 +417,21 @@ qwtPlotSpectrogram</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>756</width>
+     <width>848</width>
      <height>25</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>pushButtonStart</tabstop>
+  <tabstop>pushButtonStop</tabstop>
+  <tabstop>pushButtonTest</tabstop>
+  <tabstop>pushButtonGoToEnd</tabstop>
+  <tabstop>hSliderHistory</tabstop>
+  <tabstop>checkBoxEoF</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -384,8 +509,8 @@ qwtPlotSpectrogram</string>
      <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>716</x>
-     <y>180</y>
+     <x>811</x>
+     <y>187</y>
     </hint>
    </hints>
   </connection>
@@ -406,18 +531,34 @@ qwtPlotSpectrogram</string>
    </hints>
   </connection>
   <connection>
-   <sender>horizontalSlider</sender>
+   <sender>hSliderHistory</sender>
    <signal>valueChanged(int)</signal>
    <receiver>WiSpyMonitorMain</receiver>
    <slot>setHistorySize(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>723</x>
-     <y>292</y>
+     <x>837</x>
+     <y>331</y>
     </hint>
     <hint type="destinationlabel">
      <x>739</x>
      <y>318</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hSliderHistory</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_7</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>815</x>
+     <y>321</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>820</x>
+     <y>263</y>
     </hint>
    </hints>
   </connection>
