@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>848</width>
+    <width>981</width>
     <height>573</height>
    </rect>
   </property>
@@ -14,14 +14,48 @@
    <string>WiSpy Monitor</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
+   <layout class="QGridLayout" name="gridLayout" columnstretch="1,0">
     <property name="leftMargin">
      <number>9</number>
     </property>
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalPlts">
+      <item>
+       <widget class="QLabel" name="labelPlotPower">
+        <property name="minimumSize">
+         <size>
+          <width>610</width>
+          <height>250</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Power Plot Placeholder
+labelPlotPower
+qwtPlotPower</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelPlotSpectrogram">
+        <property name="minimumSize">
+         <size>
+          <width>610</width>
+          <height>250</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Spectrogram Plot Placeholder
+labelPlotSpectr
+qwtPlotSpectrogram</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="0" column="1">
      <layout class="QVBoxLayout" name="verticalBtns">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
        <widget class="QPushButton" name="pushButtonStart">
@@ -85,6 +119,12 @@
         </property>
         <item>
          <widget class="QLabel" name="label_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Timer:</string>
           </property>
@@ -96,7 +136,7 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Maximum</enum>
+           <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -137,16 +177,13 @@
       <item>
        <widget class="QSlider" name="hSliderTimer">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>210</width>
-          <height>16777215</height>
-         </size>
+        <property name="minimum">
+         <number>1</number>
         </property>
         <property name="maximum">
          <number>1000</number>
@@ -175,7 +212,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="sizeConstraint">
-         <enum>QLayout::SetMaximumSize</enum>
+         <enum>QLayout::SetFixedSize</enum>
         </property>
         <item>
          <widget class="QLabel" name="label_4">
@@ -196,7 +233,7 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
+           <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -237,7 +274,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="sizeConstraint">
-         <enum>QLayout::SetMaximumSize</enum>
+         <enum>QLayout::SetFixedSize</enum>
         </property>
         <item>
          <widget class="QLabel" name="label_5">
@@ -250,6 +287,9 @@
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -296,16 +336,10 @@
       <item>
        <widget class="QSlider" name="hSliderHistory">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>210</width>
-          <height>16777215</height>
-         </size>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -324,7 +358,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="sizeConstraint">
-         <enum>QLayout::SetMaximumSize</enum>
+         <enum>QLayout::SetFixedSize</enum>
         </property>
         <item>
          <widget class="QLabel" name="label_9">
@@ -344,6 +378,9 @@
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
@@ -354,8 +391,63 @@
         </item>
         <item>
          <widget class="QLabel" name="labelTimeStart">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_11">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>File Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelFileName">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>None</string>
           </property>
          </widget>
         </item>
@@ -376,40 +468,6 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalPlts">
-      <item>
-       <widget class="QLabel" name="labelPlotPower">
-        <property name="minimumSize">
-         <size>
-          <width>610</width>
-          <height>250</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Power Plot Placeholder
-labelPlotPower
-qwtPlotPower</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelPlotSpectrogram">
-        <property name="minimumSize">
-         <size>
-          <width>610</width>
-          <height>250</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Spectrogram Plot Placeholder
-labelPlotSpectr
-qwtPlotSpectrogram</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -417,12 +475,24 @@ qwtPlotSpectrogram</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>848</width>
+     <width>981</width>
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>pushButtonStart</tabstop>
