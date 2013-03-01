@@ -58,59 +58,63 @@ qwtPlotSpectrogram</string>
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButtonStart">
-        <property name="maximumSize">
-         <size>
-          <width>127</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Start</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonStop">
-        <property name="maximumSize">
-         <size>
-          <width>127</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Stop</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonTest">
-        <property name="maximumSize">
-         <size>
-          <width>127</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Test</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonGoToEnd">
-        <property name="maximumSize">
-         <size>
-          <width>127</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Go to end of the current file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Go to End</string>
-        </property>
-       </widget>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButtonStart">
+          <property name="maximumSize">
+           <size>
+            <width>127</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Start</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="pushButtonStop">
+          <property name="maximumSize">
+           <size>
+            <width>127</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Stop</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pushButtonTest">
+          <property name="maximumSize">
+           <size>
+            <width>127</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Test</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="pushButtonGoToEnd">
+          <property name="maximumSize">
+           <size>
+            <width>127</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Go to end of the current file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Go to End</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -495,10 +499,6 @@ qwtPlotSpectrogram</string>
   </action>
  </widget>
  <tabstops>
-  <tabstop>pushButtonStart</tabstop>
-  <tabstop>pushButtonStop</tabstop>
-  <tabstop>pushButtonTest</tabstop>
-  <tabstop>pushButtonGoToEnd</tabstop>
   <tabstop>hSliderHistory</tabstop>
   <tabstop>checkBoxEoF</tabstop>
  </tabstops>
@@ -511,7 +511,7 @@ qwtPlotSpectrogram</string>
    <slot>WiSpyTest()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>708</x>
+     <x>943</x>
      <y>127</y>
     </hint>
     <hint type="destinationlabel">
@@ -527,8 +527,8 @@ qwtPlotSpectrogram</string>
    <slot>WiSpyStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>705</x>
-     <y>86</y>
+     <x>943</x>
+     <y>94</y>
     </hint>
     <hint type="destinationlabel">
      <x>673</x>
@@ -543,8 +543,8 @@ qwtPlotSpectrogram</string>
    <slot>WiSpyStart()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>698</x>
-     <y>57</y>
+     <x>943</x>
+     <y>61</y>
     </hint>
     <hint type="destinationlabel">
      <x>672</x>
@@ -559,8 +559,8 @@ qwtPlotSpectrogram</string>
    <slot>WiSpyGoToEnd()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>712</x>
-     <y>158</y>
+     <x>943</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
      <x>669</x>
@@ -575,11 +575,11 @@ qwtPlotSpectrogram</string>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>732</x>
-     <y>206</y>
+     <x>970</x>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
-     <x>811</x>
+     <x>944</x>
      <y>187</y>
     </hint>
    </hints>
@@ -591,8 +591,8 @@ qwtPlotSpectrogram</string>
    <slot>setTimer(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>674</x>
-     <y>213</y>
+     <x>970</x>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>677</x>
@@ -623,12 +623,12 @@ qwtPlotSpectrogram</string>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>815</x>
-     <y>321</y>
+     <x>970</x>
+     <y>331</y>
     </hint>
     <hint type="destinationlabel">
-     <x>820</x>
-     <y>263</y>
+     <x>955</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>
