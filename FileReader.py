@@ -12,11 +12,11 @@ import numpy as np
 import logging
 
 
-class PlotFileReader():
+class FileReader():
 
     def __init__(self, fileName):
         self.fileName = fileName
-        self.log = logging.getLogger("measurement.PlotFileReader")
+        self.log = logging.getLogger("measurement.FileReader")
         self.log.info(self.fileName)
         self.fileData = open(self.fileName)
         while self.frequencyList is None:
@@ -142,7 +142,7 @@ class PlotFileReader():
 
     # def closeFile
 
-# class PlotFileReader
+# class FileReader
 
 
 def main(args):
@@ -153,9 +153,9 @@ def main(args):
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
     log.addHandler(ch)
-    pfr = PlotFileReader("/home/chwalisz/" +
-            "Code/tkncrew.git/code/sensing_wrapper/" +
-            "data_wispy_0_0.txt")
+    pfr = FileReader("/home/chwalisz/" +
+        "Code/tkncrew.git/code/sensing_wrapper/" +
+        "data_wispy_0_0.txt")
     print(pfr.frequencyList)
     while not pfr.fileEnd:
         pfr.getData()

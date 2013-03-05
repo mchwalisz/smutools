@@ -11,7 +11,7 @@ __email__ = "chwalisz@tkn.tu-berlin.de"
 from PyQt4 import QtCore, QtGui, Qt, uic
 import logging
 import PowerPlotter
-import PlotFileReader
+import FileReader
 import SpectrogramPlotter
 from time import gmtime, strftime
 
@@ -35,20 +35,19 @@ class WiSpyMainWindow(QtGui.QMainWindow):
         self.verticalPlts.addWidget(self.qwtPlotSpectrogram)
         self.labelPlotSpectrogram.close()
 
-        self.fileReader = PlotFileReader.PlotFileReader("/home/chwalisz/" +
-                                                        "Code/tkncrew.git/code/sensing_wrapper/" +
-                                                        "data_wispy_0_0.txt")
-
         #self.timerID = self.startTimer(20)
         self.hSliderTimer.setValue(300)
         self.hSliderHistory.setValue(30)
-        self.labelTimeStart.setText(strftime("%Y-%m-%d %H:%M:%S", gmtime(self.fileReader.timeStart)))
+        # 
         self.actionOpen.triggered.connect(self.actionOpen_slot)
 
     timerID = None
+    fileReader = None
 
     def WiSpyStart(self):
         self.log.debug("WiSpyStart")
+        if self.fileReader is None:
+            self.log.warning("No file opened")
         if self.timerID is None:
             self.timerID = self.startTimer(self.hSliderTimer.value())
 
@@ -67,7 +66,10 @@ class WiSpyMainWindow(QtGui.QMainWindow):
         self.fileReader.goToEnd()
 
     def timerEvent(self, e):
-        self.fileReader.getData()
+        if self.fileReader is None:
+            return
+        else:
+            self.fileReader.getData()
         if not self.fileReader.fileEnd:
             self.qwtPlotPower.updatePlot(self.fileReader)
             self.qwtPlotSpectrogram.updatePlot(self.fileReader)
@@ -101,8 +103,10 @@ class WiSpyMainWindow(QtGui.QMainWindow):
             self.labelFileName.setText(filename)
         if self.timerID is not None:
             self.killTimer(self.timerID)
-        self.fileReader.closeFile()
-        self.fileReader = PlotFileReader.PlotFileReader(filename)
+        if self.fileReader is not None:
+            self.fileReader.closeFile()
+        self.fileReader = FileReader.FileReader(filename)
+        self.labelTimeStart.setText(strftime("%Y-%m-%d %H:%M:%S", gmtime(self.fileReader.timeStart)))
 
     # def actionOpen
 
