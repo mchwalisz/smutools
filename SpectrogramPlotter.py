@@ -39,19 +39,17 @@ class SpectrogramPlotter(FigureCanvas):
             freqList = range(fReader.sweepCurrent.shape[0])
         else:
             freqList = fReader.frequencyList
-        self.dBmMin = min(np.nanmin(fReader.sweepMin), self.dBmMin)
-        self.dBmMax = max(np.nanmax(fReader.sweepMax), self.dBmMax)
         t0 = time.time() - (fReader.timeStart + fReader.timeStamp[-1])
         t1 = time.time() - (fReader.timeStart + fReader.timeStamp[0])
         if self.image is None:
             self.image = self.axes.matshow(fReader.sweepAll, cmap=cm.spectral,
-                                           vmax=self.dBmMax, vmin=self.dBmMin,
                                            animated=True, aspect="auto",
                                            extent=[freqList[0], freqList[-1], t0, t1])
+            self.figure.colorbar(self.image)
         else:
-            self.image.set_data(fReader.sweepAll)
-
             self.image.set_extent([freqList[0], freqList[-1], t0, t1])
+            self.image.set_data(fReader.sweepAll)
+            self.image.autoscale()
         self.figure.canvas.draw()
 
     # def updatePlot
