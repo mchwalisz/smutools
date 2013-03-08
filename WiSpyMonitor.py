@@ -38,7 +38,7 @@ class WiSpyMainWindow(QtGui.QMainWindow):
         #self.timerID = self.startTimer(20)
         self.hSliderTimer.setValue(300)
         self.hSliderHistory.setValue(30)
-        # 
+
         self.actionOpen.triggered.connect(self.actionOpen_slot)
 
     timerID = None
@@ -59,6 +59,7 @@ class WiSpyMainWindow(QtGui.QMainWindow):
 
     def WiSpyTest(self):
         self.log.debug("WiSpyTest")
+        self.openFile("/home/chwalisz/Dropbox/Projects/pyTools/measurement/data_wispy_0_0.txt")
         self.log.debug(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])
 
     def WiSpyGoToEnd(self):
@@ -75,28 +76,38 @@ class WiSpyMainWindow(QtGui.QMainWindow):
             self.qwtPlotSpectrogram.updatePlot(self.fileReader)
         self.checkBoxEoF.setChecked(self.fileReader.fileEnd)
         self.labelHistorySize.setNum(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])
+        self.log.debug("Data per Second: %f" %
+            ((self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])/len(self.fileReader.timeStamp)))
 
     def setTimer(self, val):
-        self.log.debug("setTimer val = %i" % (val))
+        # self.log.debug("setTimer val = %i" % (val))
         if self.timerID is not None:
             self.killTimer(self.timerID)
             self.timerID = self.startTimer(val)
 
     def setHistorySize(self, val):
-        self.log.debug("setHistorySize val = %i" % (val))
-        self.fileReader.historySize = val
+        # self.log.debug("setHistorySize val = %i" % (val))
+        if self.fileReader is not None:
+            self.fileReader.historySize = val
 
     # def setHistorySize
 
     def closeEvent(self, e):
         self.log.debug("Exit registered")
-        self.killTimer(self.timerID)
-        self.fileReader.closeFile()
+        if self.timerID is not None:
+            self.killTimer(self.timerID)
+        if self.fileReader is not None:
+            self.fileReader.closeFile()
     # def close
 
     def actionOpen_slot(self):
-        filename = QtGui.QFileDialog.getOpenFileName(self, 'Open file')
+        filename = QtGui.QFileDialog.getOpenFileName(self, 'Open file')[0]
         self.log.debug("Selected file: %s" % filename)
+        self.openFile(filename)
+
+    # def actionOpen
+
+    def openFile(self, filename):
         if len(filename) > 21:
             self.labelFileName.setText("...%s" % filename[-21:])
         else:
@@ -106,10 +117,10 @@ class WiSpyMainWindow(QtGui.QMainWindow):
         if self.fileReader is not None:
             self.fileReader.closeFile()
         self.fileReader = FileReader.FileReader(filename)
+        self.fileReader.historySize = self.hSliderHistory.value()
         self.labelTimeStart.setText(strftime("%Y-%m-%d %H:%M:%S", gmtime(self.fileReader.timeStart)))
 
-    # def actionOpen
-
+    # def openFile
 
 def main(args):
     log = logging.getLogger("measurement")
