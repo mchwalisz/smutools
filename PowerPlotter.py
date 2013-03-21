@@ -9,6 +9,9 @@ __version__ = "1.0.0"
 __email__ = "chwalisz@tkn.tu-berlin.de"
 
 import numpy as np
+import matplotlib
+
+matplotlib.rcParams['backend.qt4'] = 'PySide'
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 import logging
