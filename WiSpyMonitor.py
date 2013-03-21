@@ -8,18 +8,21 @@ __copyright__ = "Copyright (c) 2013, Technische Universität Berlin"
 __version__ = "1.0.0"
 __email__ = "chwalisz@tkn.tu-berlin.de"
 
-from PyQt4 import QtCore, QtGui, Qt, uic
+#from PyQt4 import QtCore, QtGui, Qt, uic
+#from PySide.QtUiTools import QUiLoader
+from PySide import QtCore, QtGui
 import logging
+import WiSpyMonitorGUI
 import PowerPlotter
 import FileReader
 import SpectrogramPlotter
 from time import gmtime, strftime
 
 
-class WiSpyMainWindow(QtGui.QMainWindow):
+class WiSpyMainWindow(QtGui.QMainWindow, WiSpyMonitorGUI.Ui_WiSpyMonitorMain):
     def __init__(self, parent=None):
         super(WiSpyMainWindow, self).__init__(parent)
-        uic.loadUi("WiSpyMonitorGUI.ui", self)
+        self.setupUi(self)
         self.log = logging.getLogger("measurement.WiSpyMonitor")
         # connect myaction_logic to myaction.toggled signal
         # self.myaction.toggled.connect(self.myaction_slot)
