@@ -2,7 +2,7 @@ COMPONENT=SpectrumMonitorAppC
 # CFLAGS += -I$(TOSDIR)/lib/printf
 CFLAGS +=  -I./cc2420/
 C_INCLUDE = $(TOSDIR)/../support/sdk/c/sf
-BUILD_EXTRA_DEPS += twist_trace_parser
+BUILD_EXTRA_DEPS += twist_trace_parser PrintfClient.class
 
 ifdef FREQUENCY_VECTOR
 CFLAGS += -DFREQUENCY_VECTOR=$(FREQUENCY_VECTOR)
@@ -18,5 +18,8 @@ clean: clean-twist
 
 clean-twist:
 	-rm -f twist_trace_parser
+
+PrintfClient.class: net/tinyos/tools/PrintfMsg.java net/tinyos/tools/PrintfClient.java
+	javac -cp .:./tinyos.jar net/tinyos/tools/PrintfMsg.java net/tinyos/tools/PrintfClient.java
 
 .PHONY: clean clean-twist
