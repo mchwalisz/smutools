@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WiSpyMonitorMain</class>
- <widget class="QMainWindow" name="WiSpyMonitorMain">
+ <class>MonitorMainUI</class>
+ <widget class="QMainWindow" name="MonitorMainUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>WiSpy Monitor</string>
+   <string>Spectrum Analyser</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>resources/utilities_system_monitor.png</normaloff>resources/utilities_system_monitor.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout" columnstretch="1,0">
@@ -212,6 +216,44 @@ qwtPlotSpectrogram</string>
          <string>EoF</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Data per Second:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelDpS">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>dps</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -507,7 +549,7 @@ qwtPlotSpectrogram</string>
   <connection>
    <sender>pushButtonTest</sender>
    <signal>clicked()</signal>
-   <receiver>WiSpyMonitorMain</receiver>
+   <receiver>MonitorMainUI</receiver>
    <slot>WiSpyTest()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -523,7 +565,7 @@ qwtPlotSpectrogram</string>
   <connection>
    <sender>pushButtonStop</sender>
    <signal>clicked()</signal>
-   <receiver>WiSpyMonitorMain</receiver>
+   <receiver>MonitorMainUI</receiver>
    <slot>WiSpyStop()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -539,7 +581,7 @@ qwtPlotSpectrogram</string>
   <connection>
    <sender>pushButtonStart</sender>
    <signal>clicked()</signal>
-   <receiver>WiSpyMonitorMain</receiver>
+   <receiver>MonitorMainUI</receiver>
    <slot>WiSpyStart()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -555,7 +597,7 @@ qwtPlotSpectrogram</string>
   <connection>
    <sender>pushButtonGoToEnd</sender>
    <signal>clicked()</signal>
-   <receiver>WiSpyMonitorMain</receiver>
+   <receiver>MonitorMainUI</receiver>
    <slot>WiSpyGoToEnd()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -587,7 +629,7 @@ qwtPlotSpectrogram</string>
   <connection>
    <sender>hSliderTimer</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>WiSpyMonitorMain</receiver>
+   <receiver>MonitorMainUI</receiver>
    <slot>setTimer(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -603,7 +645,7 @@ qwtPlotSpectrogram</string>
   <connection>
    <sender>hSliderHistory</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>WiSpyMonitorMain</receiver>
+   <receiver>MonitorMainUI</receiver>
    <slot>setHistorySize(int)</slot>
    <hints>
     <hint type="sourcelabel">
