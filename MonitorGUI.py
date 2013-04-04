@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""WiSpyMonitor.py: Description of what foobar does."""
+"""MonitorGUI.py: Description of what foobar does.
+
+Installation:
+sudo apt-get install python-pyside python-matplotlib"""
 
 __author__ = "Mikolaj Chwalisz"
 __copyright__ = "Copyright (c) 2013, Technische Universität Berlin"
@@ -12,28 +15,28 @@ __email__ = "chwalisz@tkn.tu-berlin.de"
 #from PySide.QtUiTools import QUiLoader
 from PySide import QtCore, QtGui
 import logging
-import WiSpyMonitorGUI
-import PowerPlotter
+import MonitorMainUI
 import FileReader
-import SpectrogramPlotter
+import PlotPower
+import PlotSpectrogram
 from time import gmtime, strftime
 
 
-class WiSpyMainWindow(QtGui.QMainWindow, WiSpyMonitorGUI.Ui_WiSpyMonitorMain):
+class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
     def __init__(self, parent=None):
-        super(WiSpyMainWindow, self).__init__(parent)
+        super(MonitorMainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.log = logging.getLogger("measurement.WiSpyMonitor")
+        self.log = logging.getLogger("measurement.MonitorGUI")
         # connect myaction_logic to myaction.toggled signal
         # self.myaction.toggled.connect(self.myaction_slot)
         #self.verticalLayout_2.removeWidget()
-        self.qwtPlotPower = PowerPlotter.PowerPlotter(self.centralwidget)
+        self.qwtPlotPower = PlotPower.PlotPower(self.centralwidget)
         self.qwtPlotPower.setMinimumSize(QtCore.QSize(610, 250))
         #self.verticalPlts.removeWidget(self.)
         self.verticalPlts.addWidget(self.qwtPlotPower)
         self.labelPlotPower.close()
 
-        self.qwtPlotSpectrogram = SpectrogramPlotter.SpectrogramPlotter(self.centralwidget)
+        self.qwtPlotSpectrogram = PlotSpectrogram.PlotSpectrogram(self.centralwidget)
         self.qwtPlotSpectrogram.setMinimumSize(QtCore.QSize(610, 250))
         self.verticalPlts.addWidget(self.qwtPlotSpectrogram)
         self.labelPlotSpectrogram.close()
@@ -79,8 +82,8 @@ class WiSpyMainWindow(QtGui.QMainWindow, WiSpyMonitorGUI.Ui_WiSpyMonitorMain):
             self.qwtPlotSpectrogram.updatePlot(self.fileReader)
         self.checkBoxEoF.setChecked(self.fileReader.fileEnd)
         self.labelHistorySize.setNum(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])
-        self.log.debug("Data per Second: %f" %
-            ((self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])/len(self.fileReader.timeStamp)))
+        self.labelDpS.setText("%f" %
+            (len(self.fileReader.timeStamp)/(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])))
 
     def setTimer(self, val):
         # self.log.debug("setTimer val = %i" % (val))
@@ -125,6 +128,7 @@ class WiSpyMainWindow(QtGui.QMainWindow, WiSpyMonitorGUI.Ui_WiSpyMonitorMain):
 
     # def openFile
 
+
 def main(args):
     log = logging.getLogger("measurement")
     log.setLevel(logging.DEBUG)
@@ -134,7 +138,7 @@ def main(args):
     ch.setFormatter(formatter)
     log.addHandler(ch)
     app = QtGui.QApplication(args)
-    MainWindow = WiSpyMainWindow()
+    MainWindow = MonitorMainWindow()
     MainWindow.show()
     sys.exit(app.exec_())
 

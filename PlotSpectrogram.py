@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""SpectrogramPlotter.py: Description of what foobar does."""
+"""PlotSpectrogram.py: Description of what foobar does."""
 
 __author__ = "Mikolaj Chwalisz"
 __copyright__ = "Copyright (c) 2013, Technische Universität Berlin"
@@ -18,13 +18,13 @@ import logging
 import time
 
 
-class SpectrogramPlotter(FigureCanvas):
-    """docstring for SpectrogramPlotter"""
+class PlotSpectrogram(FigureCanvas):
+    """docstring for PlotSpectrogram"""
     def __init__(self, *args):
         self.figure = Figure()
         FigureCanvas.__init__(self, self.figure)
         self.axes = self.figure.add_subplot(111)
-        self.log = logging.getLogger("measurement.SpectrogramPlotter")
+        self.log = logging.getLogger("measurement.PlotSpectrogram")
 
     # __init__()
 
@@ -57,4 +57,4 @@ class SpectrogramPlotter(FigureCanvas):
     # def updatePlot
 
 
-# class SpectrogramPlotter
+# class PlotSpectrogram

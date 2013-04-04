@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""PowerPlotter.py: Description of what foobar does."""
+"""PlotPower.py: Description of what foobar does."""
 
 __author__ = "Mikolaj Chwalisz"
 __copyright__ = "Copyright (c) 2013, Technische Universität Berlin"
@@ -17,8 +17,8 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 import logging
 
 
-class PowerPlotter(FigureCanvas):
-    """docstring for PowerPlotter"""
+class PlotPower(FigureCanvas):
+    """docstring for PlotPower"""
     def __init__(self, *args):
         self.figure = Figure()
         FigureCanvas.__init__(self, self.figure)
@@ -35,7 +35,7 @@ class PowerPlotter(FigureCanvas):
         self.axes.autoscale(enable=False, axis='both')
         self.figure.canvas.draw()
 
-        self.log = logging.getLogger("measurement.PowerPlotter")
+        self.log = logging.getLogger("measurement.PlotPower")
 
     # __init__()
 
@@ -62,4 +62,4 @@ class PowerPlotter(FigureCanvas):
         self.curveMin.set_data(freqList, fReader.sweepMin)
         self.figure.canvas.draw()
 
-# class PowerPlotter
+# class PlotPower
