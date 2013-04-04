@@ -447,6 +447,7 @@ int main(int argc, char *argv[]) {
 											   sb->sample_data[r]));
 					}
 					printf("\n");
+					fflush(stdout);
 				}
 			} while ((r & SPECTOOL_POLL_ADDITIONAL));
 
