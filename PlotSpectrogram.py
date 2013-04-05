@@ -44,7 +44,7 @@ class PlotSpectrogram(FigureCanvas):
         t0 = time.time() - (fReader.timeStart + fReader.timeStamp[-1])
         t1 = time.time() - (fReader.timeStart + fReader.timeStamp[0])
         if self.image is None:
-            self.image = self.axes.matshow(fReader.sweepAll, cmap=cm.spectral,
+            self.image = self.axes.matshow(fReader.sweepAll, cmap=cm.jet,
                                            animated=True, aspect="auto",
                                            extent=[freqList[0], freqList[-1], t0, t1])
             self.figure.colorbar(self.image)
