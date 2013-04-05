@@ -3,7 +3,7 @@
 
 """MonitorGUI.py: Description of what foobar does.
 
-Installation:
+Requirements installation (on ubuntu):
 sudo apt-get install python-pyside python-matplotlib"""
 
 __author__ = "Mikolaj Chwalisz"
