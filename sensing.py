@@ -6,12 +6,13 @@ Created on 23-02-2012
 '''
 from optparse import OptionParser
 import glob
-import wispy
 import logging
+from tools import wispy
 try:
-    import telos
+    from tools import telos
 except:
-    import telos_fallback as telos
+    # There is no TinyOS Environment set up, skip TelosB support
+    from tools import telos_fallback as telos
 
 
 def run_telos(telos_devs, optplot):
@@ -34,16 +35,6 @@ def run_wispy(wispy_devs, optplot):
         wispy_thr.append(wispy.sensing(name=str(wdev), wispy_nr=wdev, fileName=options.fileNamePrefix))
         wispy_thr[-1].start()
     return wispy_thr
-
-
-def run_plot(threads):
-    wispy.sensing.sema_install.acquire()
-    telos.sensing.sema_install.acquire()
-    for x in threads[:]:
-        threads.append(plot.lplot(name=x.getName(), fileName=x.log_filename))
-        threads[-1].start()
-    wispy.sensing.sema_install.release()
-    telos.sensing.sema_install.release()
 
 
 if __name__ == '__main__':
@@ -103,13 +94,6 @@ if __name__ == '__main__':
     if not threads:
         logger.error("No devices found, exiting...")
         exit()
-    if options.plot:
-        import plot
-        run_plot(threads)
-    wispy.sensing.sema_install.acquire()
-    telos.sensing.sema_install.acquire()
-    wispy.sensing.sema_install.release()
-    telos.sensing.sema_install.release()
     while True:
         try:
             line = raw_input('Type "stop" to end:')

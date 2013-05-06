@@ -15,10 +15,10 @@ __email__ = "chwalisz@tkn.tu-berlin.de"
 #from PySide.QtUiTools import QUiLoader
 from PySide import QtCore, QtGui
 import logging
-import MonitorMainUI
-import FileReader
-import PlotPower
-import PlotSpectrogram
+from tools import MonitorMainUI
+from tools import FileReader
+from tools import PlotPower
+from tools import PlotSpectrogram
 from time import gmtime, strftime
 
 
