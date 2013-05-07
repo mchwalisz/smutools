@@ -1,25 +1,39 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""MonitorGUI.py: Description of what foobar does.
+"""
+MonitorGUI.py: Description of what foobar does.
 
-Requirements installation (on ubuntu):
-sudo apt-get install python-pyside python-matplotlib"""
+Usage:
+  MonitorGUI.py [options] [--quiet | --verbose]
+
+Other options:
+  -q, --quiet               print less text
+  -v, --verbose             print more text
+  -h, --help                show this help message and exit
+  --version                 show version and exit
+"""
 
 __author__ = "Mikolaj Chwalisz"
 __copyright__ = "Copyright (c) 2013, Technische Universität Berlin"
 __version__ = "1.0.0"
 __email__ = "chwalisz@tkn.tu-berlin.de"
 
-#from PyQt4 import QtCore, QtGui, Qt, uic
-#from PySide.QtUiTools import QUiLoader
-from PySide import QtCore, QtGui
 import logging
-from tools import MonitorMainUI
-from tools import FileReader
-from tools import PlotPower
-from tools import PlotSpectrogram
 from time import gmtime, strftime
+import sys
+try:
+    from PySide import QtCore, QtGui
+    from tools import MonitorMainUI
+    from tools import FileReader
+    from tools import PlotPower
+    from tools import PlotSpectrogram
+except:
+    print """
+    Requirements installation (on ubuntu):
+    sudo apt-get install python-pyside python-matplotlib
+    """
+    raise
 
 
 class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
@@ -129,19 +143,39 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
     # def openFile
 
 
-def main(args):
-    log = logging.getLogger("measurement")
-    log.setLevel(logging.DEBUG)
-    ch = logging.StreamHandler()
-    formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    ch.setFormatter(formatter)
-    log.addHandler(ch)
-    app = QtGui.QApplication(args)
+def main(sargs):
+    app = QtGui.QApplication(sys.argv)
     MainWindow = MonitorMainWindow()
     MainWindow.show()
     sys.exit(app.exec_())
 
 if __name__ == "__main__":
-    import sys
-    main(sys.argv)
+    try:
+        from docopt import docopt
+    except:
+        print """
+        Please install docopt using:
+          pip install docopt==0.6.1
+        For more refer to:
+        https://github.com/docopt/docopt
+        """
+        raise
+
+    dargs = docopt(__doc__, version=__version__)
+
+    log = logging.getLogger('measurement')
+    log.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    log_level = logging.INFO  # default
+    if dargs['--verbose']:
+        log_level = logging.DEBUG
+    elif dargs['--quiet']:
+        log_level = logging.ERROR
+    ch.setLevel(log_level)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    log.addHandler(ch)
+    main(dargs)
