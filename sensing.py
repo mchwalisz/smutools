@@ -119,5 +119,4 @@ if __name__ == "__main__":
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
     log.addHandler(ch)
-    print(args)
     main(args)
