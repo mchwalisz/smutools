@@ -45,13 +45,11 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
         # self.myaction.toggled.connect(self.myaction_slot)
         #self.verticalLayout_2.removeWidget()
         self.qwtPlotPower = PlotPower.PlotPower(self.centralwidget)
-        self.qwtPlotPower.setMinimumSize(QtCore.QSize(610, 250))
         #self.verticalPlts.removeWidget(self.)
         self.verticalPlts.addWidget(self.qwtPlotPower)
         self.labelPlotPower.close()
 
         self.qwtPlotSpectrogram = PlotSpectrogram.PlotSpectrogram(self.centralwidget)
-        self.qwtPlotSpectrogram.setMinimumSize(QtCore.QSize(610, 250))
         self.verticalPlts.addWidget(self.qwtPlotSpectrogram)
         self.labelPlotSpectrogram.close()
 

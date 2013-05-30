@@ -11,6 +11,7 @@ __email__ = "chwalisz@tkn.tu-berlin.de"
 
 try:
     import matplotlib
+    from PySide import QtCore
     matplotlib.rcParams['backend.qt4'] = 'PySide'
     from matplotlib.figure import Figure
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
@@ -63,5 +64,9 @@ class PlotSpectrogram(FigureCanvas):
 
     # def updatePlot
 
+    def initUI(self):
+        self.setMinimumSize(QtCore.QSize(610, 250))
+
+    # def initUI
 
 # class PlotSpectrogram

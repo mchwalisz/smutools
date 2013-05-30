@@ -13,6 +13,7 @@ __email__ = "chwalisz@tkn.tu-berlin.de"
 
 try:
     import numpy as np
+    from PySide import QtCore
     import matplotlib
     matplotlib.rcParams['backend.qt4'] = 'PySide'
     from matplotlib.figure import Figure
@@ -71,4 +72,10 @@ class PlotPower(FigureCanvas):
         self.curveMin.set_data(freqList, fReader.sweepMin)
         self.figure.canvas.draw()
 
+    # def updatePlot
+
+    def initUI(self):
+        self.setMinimumSize(QtCore.QSize(610, 250))
+
+    # def initUI
 # class PlotPower
