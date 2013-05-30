@@ -4,6 +4,17 @@
 """
 PlotPower.py: Frequency power plot back-end
 
+Usage:
+  PlotPower.py [options] [--quiet | --verbose]
+
+Options:
+  -f FILE, --file FILE      Data file name [default: data.txt]
+
+Other options:
+  -q, --quiet               print less text
+  -v, --verbose             print more text
+  -h, --help                show this help message and exit
+  --version                 show version and exit
 """
 
 __author__ = "Mikolaj Chwalisz"
@@ -78,4 +89,74 @@ class PlotPower(FigureCanvas):
         self.setMinimumSize(QtCore.QSize(610, 250))
 
     # def initUI
+
+    fileReader = None
+
+    def timerEvent(self, e):
+        """
+        Use only of testing or examples
+        """
+        if self.fileReader is None:
+            return
+        else:
+            self.fileReader.getData()
+        if not self.fileReader.fileEnd:
+            self.updatePlot(self.fileReader)
+
+    # def timerEvent
+
 # class PlotPower
+
+
+def main(dargs):
+    """Will create window with only PlotPower widget, load file and read from it.
+
+    Use only of testing or examples
+    """
+    app = QtGui.QApplication(sys.argv)
+    wid = PlotPower()
+    wid.fileReader = FileReader.FileReader(dargs['--file'])
+    wid.startTimer(50)
+    wid.show()
+    sys.exit(app.exec_())
+# def main
+
+if __name__ == "__main__":
+    """Will create window with only PlotPower widget, load file and read from it.
+
+    Use only of testing or examples
+    """
+    try:
+        from docopt import docopt
+    except:
+        print """
+        Please install docopt using:
+          pip install docopt==0.6.1
+        For more refer to:
+          https://github.com/docopt/docopt
+        """
+        raise
+    import sys
+    from PySide import QtGui
+    import FileReader
+
+    dargs = docopt(__doc__, version=__version__)
+
+    log = logging.getLogger('measurement')
+    log.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    log_level = logging.INFO  # default
+    if dargs['--verbose']:
+        log_level = logging.DEBUG
+    elif dargs['--quiet']:
+        log_level = logging.ERROR
+    ch.setLevel(log_level)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    log.addHandler(ch)
+    main(dargs)
+
+# if __name__ == "__main__"
