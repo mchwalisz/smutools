@@ -1,19 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""PlotSpectrogram.py: Description of what foobar does."""
+"""PlotSpectrogram.py: Spectrogram back-end
+"""
 
 __author__ = "Mikolaj Chwalisz"
 __copyright__ = "Copyright (c) 2013, Technische Universität Berlin"
 __version__ = "1.0.0"
 __email__ = "chwalisz@tkn.tu-berlin.de"
 
-import numpy as np
-import matplotlib
-matplotlib.rcParams['backend.qt4'] = 'PySide'
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-import matplotlib.cm as cm
+try:
+    import matplotlib
+    matplotlib.rcParams['backend.qt4'] = 'PySide'
+    from matplotlib.figure import Figure
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    import matplotlib.cm as cm
+except:
+    print """
+    Requirements installation (on ubuntu):
+    sudo apt-get install python-numpy python-pyside python-matplotlib
+    """
+    raise
 import logging
 import time
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-MonitorGUI.py: Description of what foobar does.
+MonitorGUI.py: Measurements plotting tool
 
 Usage:
   MonitorGUI.py [options] [--quiet | --verbose]
@@ -31,7 +31,7 @@ try:
 except:
     print """
     Requirements installation (on ubuntu):
-    sudo apt-get install python-pyside python-matplotlib
+    sudo apt-get install python-numpy python-pyside python-matplotlib
     """
     raise
 
@@ -157,7 +157,7 @@ if __name__ == "__main__":
         Please install docopt using:
           pip install docopt==0.6.1
         For more refer to:
-        https://github.com/docopt/docopt
+          https://github.com/docopt/docopt
         """
         raise
 
