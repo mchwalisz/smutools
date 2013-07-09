@@ -31,12 +31,15 @@ import glob
 import logging
 import threading
 import socket
+import time
+import struct
 
 
 class sensing(threading.Thread):
     '''
     classdocs
     '''
+    BUF_SIZE_DEFAULT = 2*4096
 
     def __init__(self, fsvhost='192.168.10.250', fsvport='5025', fileName='data'):
         threading.Thread.__init__(self, name=' '.join(['FSV', fsvhost]))
@@ -44,8 +47,8 @@ class sensing(threading.Thread):
         self.fsvport = int(fsvport)
         self.fileName = fileName
         self._stop = threading.Event()
-        self.log_filename = '%s_fsv_%s.txt' % (self.fileName, self.fsvhost)
-        self.meta_filename = '%s_fsv_%s_meta.txt' % (self.fileName, self.fsvhost)
+        self.log_filename = '%s_fsv_%s.fsv' % (self.fileName, self.fsvhost)
+        self.meta_filename = '%s_fsv_%s.fsv.txt' % (self.fileName, self.fsvhost)
         self.logger = logging.getLogger('sensing.fsv')
         self.sock = socket.socket(
             socket.AF_INET, socket.SOCK_STREAM)
@@ -63,17 +66,28 @@ class sensing(threading.Thread):
 
     def run(self):
         self.logger.info('START - file %s - device %s' % (self.log_filename, self.fsvhost))
-        result = self.command("*IDN?")
-        while not '0,"No error"' in result:
-            result = self.command("SYSTem:ERRor?")
-        self.getMeta()
+        self.command("*IDN?")
+        self.getErrors()
+        metafile = open(self.meta_filename, 'w')
+        outfile = open(self.log_filename, 'w')
 
-        self.sock.close()
+        self.getMeta(metafile)
+        self.sock.settimeout(10)
+        self.sock.send("FORMat REAL,32\n")
+        while not self.stopped():
+            # self.command("SWE:TIME?")
+            self.getData(outfile)
+
+        self.logger.info("Closing connection")
+        outfile.close()
+        metafile.close()
+        self.close()
     # def run
 
-    def getMeta(self):
+    def getMeta(self, of):
         self.sock.send("INIT:CONT OFF\n")
         self.sock.send("SYST:Err:CLE:All\n")
+        self.sock.send("SYST:DISP:UPD OFF\n")
         self.sock.send("FORMat ASCii\n")
         self.sock.send("MMEM:STOR:TRAC  1,'C:\TRACE.DAT'\n")
         self.sock.send("MMEM:DATA? 'C:\TRACE.DAT'\n")
@@ -81,34 +95,48 @@ class sensing(threading.Thread):
         self.sock.settimeout(None)
         buf = self.sock.recv(2)
         self.logger.debug("Meta: Buf #: %i" % int(buf[1]))
-        readsize = int(self.sock.recv(int(buf[1])))
-        self.logger.debug("Meta: Buf size: %i" % readsize)
+        toread = int(self.sock.recv(int(buf[1])))
+        self.logger.debug("Meta: Buf size: %i" % toread)
 
-        f = open(self.meta_filename, 'w')
-        readbytes = 0
-        bufsize_def = 4096
-        while readbytes < readsize:
-            if (readbytes + bufsize_def) > readsize:
-                bufs = readsize - readbytes
+        dread = 0
+        while toread:
+            if self.BUF_SIZE_DEFAULT > toread:
+                bufs = toread - dread
             else:
-                bufs = bufsize_def
+                bufs = self.BUF_SIZE_DEFAULT
             buf = self.sock.recv(bufs)
-            readbytes += bufs
-            self.logger.debug("Meta: Just read: %i, already done: %i, todo: %i" % (bufs, readbytes, readsize))
-            f.write(buf)
-            f.flush()
-        buf = []
-        while True:
-            try:
-                data = self.sock.recv(1024)
-                buf.append(data)
-            except socket.timeout:
-                break
-            result = ''.join(buf).strip('\n').split('\n')
-            for l in result:
-                self.logger.info("Received: %s" % l)
-        f.close()
+            toread -= len(buf)
+            # self.logger.debug("Meta: Just read: %i, todo: %i" % (len(buf), toread))
+            of.write(buf)
+            of.flush()
     # def getMeta
+
+    def getData(self, of):
+        self.sock.send("INIT:IMM;*WAI\n")
+        self.sock.send("TRAC? TRACE1\n")
+
+        # self.sock.send("FORMat ASCii\n")
+
+        # self.sock.settimeout(None)
+        while self.sock.recv(1) != "#":
+            pass
+        buf = self.sock.recv(1)
+        toread = int(self.sock.recv(int(buf)))
+        self.logger.debug("Data: Buf len %i, Buf size %i" % (int(buf), toread))
+
+        dread = 0
+        of.write(struct.pack('d', time.time()))
+        while toread:
+            if self.BUF_SIZE_DEFAULT > toread:
+                bufs = toread - dread
+            else:
+                bufs = self.BUF_SIZE_DEFAULT
+            buf = self.sock.recv(bufs)
+            toread -= len(buf)
+            # self.logger.debug("Meta: Just read: %i, todo: %i" % (len(buf), toread))
+            of.write(buf)
+        of.flush()
+    # # def getData
 
     def command(self, cmd):
         self.logger.info("Send command: %s" % cmd)
@@ -124,11 +152,26 @@ class sensing(threading.Thread):
                     break
             result = ''.join(buf).strip('\n').split('\n')
             for l in result:
-                self.logger.info("Received: %s" % l)
+                self.logger.info("Received rsp: %s" % l)
             return result
         else:
             return
     # def command
+
+    def close(self):
+        self.getErrors()
+        self.command("INIT:CONT ON")
+        # self.command("SYSTem:​KLOCk OFF")
+        self.sock.close()
+    # def close
+
+    def getErrors(self):
+        result = ""
+        i = 0
+        while (not '0,"No error"' in result) and i < 10:
+            result = self.command("SYSTem:ERRor?")
+            i += 1
+    # def getErrors
 
 
 def main(args):
