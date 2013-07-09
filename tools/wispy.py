@@ -5,23 +5,25 @@ Created on 10-02-2012
 @author: Mikolaj Chwalisz
 '''
 import threading
-import subprocess, os
+import subprocess
+import os
 import logging
 
 
-spectools_dir = "../wispy_spectools" # Has to relative to the the wispy.py module
+spectools_dir = "../wispy_spectools"  # Has to relative to the the wispy.py module
+
 
 class sensing(threading.Thread):
     '''
     classdocs
     '''
 
-    def __init__(self,name = '0',wispy_nr = '0', fileName = 'data'):
-        threading.Thread.__init__(self, name = ' '.join(['Wispy',name]))
+    def __init__(self, name='0', wispy_nr='0', fileName='data'):
+        threading.Thread.__init__(self, name=' '.join(['Wispy', name]))
         self.wispy_nr = wispy_nr
         self.fileName = fileName
         self._stop = threading.Event()
-        self.log_filename = ''.join([self.fileName , '_wispy_%s_%s.txt' %(name, self.wispy_nr)])
+        self.log_filename = ''.join([self.fileName, '_wispy_%s_%s.txt' % (name, self.wispy_nr)])
         self.logger = logging.getLogger('sensing.wispy')
 
     def stop(self):
@@ -31,13 +33,17 @@ class sensing(threading.Thread):
         return self._stop.isSet()
 
     sema_install = threading.Semaphore()
+
     def run(self):
         self.sema_install.acquire()
         self.logger.info('START - file {0} - device {1}'.format(self.log_filename, self.wispy_nr))
         # Prepare log file
         log_file = open(self.log_filename, 'w')
         # Run sensing
-        cmd_run = ['/'.join([os.path.dirname(__file__),spectools_dir, "spectool_raw"]), "-d", self.wispy_nr, "-r" , "0"]
+        cmd_run = [
+            '/'.join([os.path.dirname(__file__), spectools_dir, "spectool_raw"]),
+            "-d", self.wispy_nr, "-r", "0"
+        ]
         self.logger.debug(' '.join(cmd_run))
         proc = subprocess.Popen(cmd_run,
                                 stdout=log_file,
@@ -54,18 +60,23 @@ class sensing(threading.Thread):
         self.logger.info('STOP - file {0} - device {1}'.format(self.log_filename, self.wispy_nr))
         self.sema_install.release()
 
+
 def list_devs():
-    cmd_grep_nodes = ''.join(['/'.join([os.path.dirname(__file__),spectools_dir, "spectool_raw"])," -l ", " | grep Device | awk '{print $2}'"])
+    cmd_grep_nodes = ''.join([
+        '/'.join([os.path.dirname(__file__), spectools_dir, "spectool_raw"]),
+        " -l ", " | grep Device | awk '{print $2}'"
+    ])
     #print(cmd_grep_nodes)
     dev_nr = subprocess.Popen(cmd_grep_nodes, stdout=subprocess.PIPE, shell=True).stdout.read()
     mote_devs = str(dev_nr.decode('UTF-8'))
     mote_devs = mote_devs.split('\n')
     dev_list = []
     for x in mote_devs:
-        x = x.replace(':','')
+        x = x.replace(':', '')
         if not x == '':
             dev_list.append(x)
     return dev_list
+
 
 def main():
 #    import plot
@@ -85,7 +96,7 @@ def main():
         logger.warning('No devices found, exiting...')
         return
     for x in dev_list:
-        wispy_thr.append(sensing(name = str(x), wispy_nr = x))
+        wispy_thr.append(sensing(name=str(x), wispy_nr=x))
         wispy_thr[-1].start()
 #    sensing.sema_install.acquire()
 #    for x in dev_list:
