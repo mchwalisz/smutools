@@ -10,7 +10,7 @@ Options:
   -p PREFIX, --prefix=PREFIX  select PREFIX as the file name
                     prefix for measurements [default: data]
   -n FSVHOST, --fsvhost=FSVHOST  host name [default: 192.168.10.250]
-  -p FSVPORT, --fsvport=FSVPORT  port number [default: 5025]
+  -P FSVPORT, --fsvport=FSVPORT  port number [default: 5025]
   -F, --force-overwrite       force files with PREFIX to be
                     overwritten (POSSIBLE LOSS OF DATA)
   -l, --list                  list all available devices
@@ -48,7 +48,6 @@ class sensing(threading.Thread):
         self.fileName = fileName
         self._stop = threading.Event()
         self.log_filename = '%s_fsv_%s.fsv' % (self.fileName, self.fsvhost)
-        self.meta_filename = '%s_fsv_%s.fsv.txt' % (self.fileName, self.fsvhost)
         self.logger = logging.getLogger('sensing.fsv')
         self.sock = socket.socket(
             socket.AF_INET, socket.SOCK_STREAM)
@@ -65,22 +64,21 @@ class sensing(threading.Thread):
     # def stopped
 
     def run(self):
-        self.logger.info('START - file %s - device %s' % (self.log_filename, self.fsvhost))
-        self.command("*IDN?")
+        idn = self.command("*IDN?")
+        idn = ' '.join(idn.split(',')[0:3])
+        self.logger.info('START - file %s - %s' % (self.log_filename, idn))
         self.getErrors()
-        metafile = open(self.meta_filename, 'w')
         outfile = open(self.log_filename, 'w')
 
-        self.getMeta(metafile)
+        self.getMeta(outfile)
         self.sock.settimeout(10)
         self.sock.send("FORMat REAL,32\n")
+        self.logger.info('RUNNING - file %s - %s' % (self.log_filename, idn))
         while not self.stopped():
             # self.command("SWE:TIME?")
             self.getData(outfile)
-
-        self.logger.info("Closing connection")
+        self.logger.info('STOP - file %s - %s' % (self.log_filename, idn))
         outfile.close()
-        metafile.close()
         self.close()
     # def run
 
@@ -108,7 +106,8 @@ class sensing(threading.Thread):
             toread -= len(buf)
             # self.logger.debug("Meta: Just read: %i, todo: %i" % (len(buf), toread))
             of.write(buf)
-            of.flush()
+        of.write("Binary Format;double(UnixTimeStamp)float32(Value)*#Values;\n")
+        of.flush()
     # def getMeta
 
     def getData(self, of):
@@ -139,7 +138,7 @@ class sensing(threading.Thread):
     # # def getData
 
     def command(self, cmd):
-        self.logger.info("Send command: %s" % cmd)
+        self.logger.debug("Send command: %s" % cmd)
         self.sock.send(cmd + "\n")
         if '?' in cmd:
             self.sock.settimeout(1)
@@ -150,9 +149,8 @@ class sensing(threading.Thread):
                     buf.append(data)
                 except socket.timeout:
                     break
-            result = ''.join(buf).strip('\n').split('\n')
-            for l in result:
-                self.logger.info("Received rsp: %s" % l)
+            result = ''.join(buf).strip('\n')
+            self.logger.debug("Received rsp: %s" % result)
             return result
         else:
             return
@@ -185,6 +183,7 @@ def main(args):
     # if not threads:
     #     log.error("No devices found, exiting...")
     #     exit()
+    time.sleep(5)
     while True:
         try:
             line = raw_input('Type "stop" to end:')

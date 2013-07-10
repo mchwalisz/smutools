@@ -32,7 +32,7 @@ p = struct( ...
 delimiter = ';';
 
 
-fileId = fopen([fileName '.txt']);
+fileId = fopen(fileName);
 fline = fgets(fileId);
 
 while ischar(fline)
@@ -53,36 +53,32 @@ while ischar(fline)
         end
     end
     if strcmpi(name, 'values')
-        % All Meta data has been read, from the next line it is only data
+        % From the next line it is the sample data data
+        format = '%f %f';
+        c = textscan(fileId, format, p.Meta.Values, ...
+            'delimiter', delimiter , ...
+            'ReturnOnError', 0);
+        p.CenterFreq = c{1};
+        p.PowerSample = c{2}';
+    end
+    if strcmpi(name, 'binary_format')
+        % There are binary data behind this poind we need to process them
+        position = ftell(fileId);
+        % Read data points
+        c = fread(fileId, [p.Meta.Values + 2, Inf], 'float32');
+        p.Power = c(3:end,:)';
+        % Go back and reread time stamps
+        fseek(fileId,position,'bof');
+        SampleTime = fread(fileId,inf,'double',4*p.Meta.Values);
+        % Put starting poind as text
+        p.Tstart = datestr(SampleTime(1)/86400+datenum('1/1/1970'));
+        tStart_epoch = (datenum(p.Tstart)-datenum(1970,1,1)) * 86400;
+        % Store only relative time in the data
+        p.SampleTime = SampleTime - tStart_epoch;
         break
     end
     fline = fgets(fileId);
 end
-
-format = '%f %f ';
-c = textscan(fileId, format, 'delimiter', delimiter , ...
-    'ReturnOnError', 0);
-
-p.CenterFreq = c{1};
-p.PowerSample = c{2}';
-
-fclose(fileId);
-
-% Get real data
-fileId = fopen(fileName);
-
-c = fread(fileId, [p.Meta.Values + 2, Inf], 'float32');
-
-p.Power = c(3:end,:)';
-
-fseek(fileId,0,'bof');
-SampleTime = fread(fileId,inf,'double',4*p.Meta.Values);
-p.Tstart = datestr(SampleTime(1)/86400+datenum('1/1/1970'));
-tStart_epoch = (datenum(p.Tstart)-datenum(1970,1,1)) * 86400;
-p.SampleTime = SampleTime - tStart_epoch;
-
-
-
 fclose(fileId);
 end
 
