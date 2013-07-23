@@ -39,7 +39,7 @@ class sensing(threading.Thread):
     '''
     classdocs
     '''
-    BUF_SIZE_DEFAULT = 2*4096
+    BUF_SIZE_DEFAULT = 8*4096
 
     def __init__(self, fsvhost='192.168.10.250', fsvport='5025', fileName='data'):
         threading.Thread.__init__(self, name=' '.join(['FSV', fsvhost]))
@@ -121,7 +121,7 @@ class sensing(threading.Thread):
             pass
         buf = self.sock.recv(1)
         toread = int(self.sock.recv(int(buf)))
-        self.logger.debug("Data: Buf len %i, Buf size %i" % (int(buf), toread))
+        # self.logger.debug("Data: Buf len %i, Buf size %i" % (int(buf), toread))
 
         dread = 0
         of.write(struct.pack('d', time.time()))
