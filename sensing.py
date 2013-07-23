@@ -12,6 +12,9 @@ Options:
                     prefix for measurements [default: data]
   -F, --force-overwrite       force files with PREFIX to be
                     overwritten (POSSIBLE LOSS OF DATA)
+  -f FSVHOST, --fsv=FSVHOST   connect to R&S FSV
+  --fsvport=FSVPORT           port number [default: 5025]
+  -g, --gui                   run monitor gui
   -l, --list                  list all available devices
 
 Other options:
@@ -28,7 +31,9 @@ __email__ = "chwalisz@tkn.tu-berlin.de"
 
 import glob
 import logging
+import time
 from tools import wispy
+from tools import rsfsv
 try:
     from tools import telos
 except:
@@ -75,16 +80,36 @@ def main(args):
     threads = []
     threads.extend(run_telos(telos_devs))
     threads.extend(run_wispy(wispy_devs))
+    if args['--fsv'] is not None:
+        log.info("Starting FSV on host: %s" % args['--fsv'])
+        threads.append(rsfsv.sensing(
+            fsvhost=args['--fsv'],
+            fsvport=args['--fsvport'],
+            fileName=args['--prefix']))
+        threads[-1].start()
     if not threads:
         log.error("No devices found, exiting...")
         exit()
-    while True:
-        try:
-            line = raw_input('Type "stop" to end:')
-        except KeyboardInterrupt:
-            break
-        if 'stop' in line:
-            break
+    if args['--gui']:
+        import sys
+        from PySide import QtGui
+        import MonitorGUI
+        time.sleep(2)
+        app = QtGui.QApplication(sys.argv)
+        apps = []
+        for x in threads:
+            log.info("Starting GUI")
+            apps.append(MonitorGUI.MonitorMainWindow(filename=x.log_filename))
+            apps[-1].show()
+        app.exec_()
+    else:
+        while True:
+            try:
+                line = raw_input('Type "stop" to end:')
+            except KeyboardInterrupt:
+                break
+            if 'stop' in line:
+                break
     for x in threads:
         x.stop()
 # def main
