@@ -23,7 +23,7 @@ import logging
 from time import gmtime, strftime
 import sys
 try:
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
     from tools import MonitorMainUI
     from tools import FileReader
     from tools import PlotPower
@@ -37,10 +37,11 @@ except:
 
 
 class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
-    def __init__(self, parent=None):
+
+    def __init__(self, parent=None, filename=None):
         super(MonitorMainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.log = logging.getLogger("measurement.MonitorGUI")
+        self.log = logging.getLogger("sensing.MonitorGUI")
         # connect myaction_logic to myaction.toggled signal
         # self.myaction.toggled.connect(self.myaction_slot)
         #self.verticalLayout_2.removeWidget()
@@ -58,6 +59,9 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
         self.hSliderHistory.setValue(30)
 
         self.actionOpen.triggered.connect(self.actionOpen_slot)
+
+        if filename is not None:
+            self.openFile(filename)
 
     timerID = None
     fileReader = None
@@ -94,20 +98,32 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
             self.qwtPlotSpectrogram.updatePlot(self.fileReader)
         self.checkBoxEoF.setChecked(self.fileReader.fileEnd)
         self.labelHistorySize.setNum(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])
-        self.labelDpS.setText("%f" %
-            (len(self.fileReader.timeStamp)/(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])))
+        self.labelDaT.setText("%f" %
+            ((self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0]) /
+                len(self.fileReader.timeStamp)*1000))
 
     def setTimer(self, val):
-        # self.log.debug("setTimer val = %i" % (val))
+        self.log.debug("setTimer val = %i" % (val))
         if self.timerID is not None:
             self.killTimer(self.timerID)
             self.timerID = self.startTimer(val)
+
+    def autoSetTimer(self, val):
+        self.log.debug("value: %i" % (val))
+        if val:
+            timerms = ((self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0]) /
+                len(self.fileReader.timeStamp)*1000)
+            timerms = timerms - timerms/10  # Make it 10% faster than data
+            self.hSliderTimer.setValue(timerms)
+            self.hSliderTimer.setEnabled(False)
+        else:
+            self.hSliderTimer.setEnabled(True)
+    # def autoSetTimer
 
     def setHistorySize(self, val):
         # self.log.debug("setHistorySize val = %i" % (val))
         if self.fileReader is not None:
             self.fileReader.historySize = val
-
     # def setHistorySize
 
     def closeEvent(self, e):
@@ -128,15 +144,18 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
     def openFile(self, filename):
         if len(filename) > 21:
             self.labelFileName.setText("...%s" % filename[-21:])
+            self.setWindowTitle("Spectrum Analyser: ...%s" % filename[-21:])
         else:
             self.labelFileName.setText(filename)
+            self.setWindowTitle("Spectrum Analyser: %s" % filename)
         if self.timerID is not None:
             self.killTimer(self.timerID)
         if self.fileReader is not None:
             self.fileReader.closeFile()
-        self.fileReader = FileReader.FileReader(filename)
+        self.fileReader = FileReader.FileReaderLoader(filename)
         self.fileReader.historySize = self.hSliderHistory.value()
         self.labelTimeStart.setText(strftime("%Y-%m-%d %H:%M:%S", gmtime(self.fileReader.timeStart)))
+
 
     # def openFile
 
@@ -161,7 +180,7 @@ if __name__ == "__main__":
 
     dargs = docopt(__doc__, version=__version__)
 
-    log = logging.getLogger('measurement')
+    log = logging.getLogger('sensing')
     log.setLevel(logging.DEBUG)
     # create console handler with a higher log level
     ch = logging.StreamHandler()
