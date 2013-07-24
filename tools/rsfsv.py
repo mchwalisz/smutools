@@ -51,6 +51,7 @@ class sensing(threading.Thread):
         self.logger = logging.getLogger('sensing.fsv')
         self.sock = socket.socket(
             socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
         self.sock.connect((self.fsvhost, self.fsvport))
         # self.sockfile = self.sock.makefile("")
     # def __init__
