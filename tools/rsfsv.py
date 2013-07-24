@@ -84,12 +84,12 @@ class sensing(threading.Thread):
     # def run
 
     def getMeta(self, of):
-        self.sock.send("INIT:CONT OFF\n")
-        self.sock.send("SYST:Err:CLE:All\n")
-        self.sock.send("SYST:DISP:UPD OFF\n")
-        self.sock.send("FORMat ASCii\n")
-        self.sock.send("MMEM:STOR:TRAC  1,'C:\TRACE.DAT'\n")
-        self.sock.send("MMEM:DATA? 'C:\TRACE.DAT'\n")
+        self.sock.send("INIT:CONT OFF\n")  # Disable continuous sweep
+        self.sock.send("SYST:Err:CLE:All\n")  # Clear all previous errors
+        # self.sock.send("SYSTem:DISPlay:UPDate OFF\n")  # Disable display update (should make everything faster)
+        self.sock.send("FORMat ASCii\n")  # Get meta data in ASCii mode (human readable, slower)
+        self.sock.send("MMEM:STOR:TRAC  1,'C:\TRACE.DAT'\n")  # Store one trace to the file
+        self.sock.send("MMEM:DATA? 'C:\TRACE.DAT'\n")  # Download this trace, it also has all the settings stored
 
         self.sock.settimeout(None)
         buf = self.sock.recv(2)
@@ -112,8 +112,8 @@ class sensing(threading.Thread):
     # def getMeta
 
     def getData(self, of):
-        self.sock.send("INIT:IMM;*WAI\n")
-        self.sock.send("TRAC? TRACE1\n")
+        self.sock.send("INIT:IMM; *WAI\n")
+        self.sock.send("TRAC? TRACE1; *WAI\n")
 
         # self.sock.send("FORMat ASCii\n")
 
@@ -160,6 +160,7 @@ class sensing(threading.Thread):
     def close(self):
         self.getErrors()
         self.command("INIT:CONT ON")
+        self.command("SYSTem:DISPlay:UPDate ON")
         # self.command("SYSTem:​KLOCk OFF")
         self.sock.close()
     # def close
