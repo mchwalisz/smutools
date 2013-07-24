@@ -55,7 +55,7 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
         self.labelPlotSpectrogram.close()
 
         #self.timerID = self.startTimer(20)
-        self.hSliderTimer.setValue(300)
+        self.hSliderTimer.setValue(30)
         self.hSliderHistory.setValue(30)
 
         self.actionOpen.triggered.connect(self.actionOpen_slot)
@@ -96,6 +96,14 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
         if not self.fileReader.fileEnd:
             self.qwtPlotPower.updatePlot(self.fileReader)
             self.qwtPlotSpectrogram.updatePlot(self.fileReader)
+            if self.checkBoxAutoTimer.isChecked():
+                if self.autoTimerCount > 10:
+                    self.autoSetTimer(True)
+                    self.autoTimerCount = 0
+                else:
+                    self.autoTimerCount += 1
+        else:
+            self.autoTimerCount = 0
         self.checkBoxEoF.setChecked(self.fileReader.fileEnd)
         self.labelHistorySize.setNum(self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0])
         self.labelDaT.setText("%f" %
@@ -108,8 +116,10 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
             self.killTimer(self.timerID)
             self.timerID = self.startTimer(val)
 
+    autoTimerCount = 0
+
     def autoSetTimer(self, val):
-        self.log.debug("value: %i" % (val))
+        # self.log.debug("value: %i" % (val))
         if val:
             timerms = ((self.fileReader.timeStamp[-1] - self.fileReader.timeStamp[0]) /
                 len(self.fileReader.timeStamp)*1000)

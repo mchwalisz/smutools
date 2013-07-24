@@ -233,9 +233,12 @@ qwtPlotSpectrogram</string>
          </spacer>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="checkBoxAutoTimer">
           <property name="text">
            <string>Auto Timer</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -698,7 +701,7 @@ qwtPlotSpectrogram</string>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
+   <sender>checkBoxAutoTimer</sender>
    <signal>clicked(bool)</signal>
    <receiver>MonitorMainUI</receiver>
    <slot>autoSetTimer(bool)</slot>
