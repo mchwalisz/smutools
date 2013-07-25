@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-sensing.py: Starts sensing process for all connected
-WiSpy and TelosB devices
+smut.py: Starts sensing process for all measurement connected devices
+
+Supports:
+- WiSpy
+- Telos
+- R&S FSV
 
 
 Usage: sensing.py [options]
