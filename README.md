@@ -1,13 +1,12 @@
-# Measurement tools
+# SMUTS - Spectrum MeasUrement ToolS
 
-Python scripts that aim to help running CREW experiments.
+Python scripts that aim to help running spectrum sensing experiments.
 
-There are tools for WiSpy device and TelosB Spectrum sensing application.
+There are tools for different device types like:
 
-# Usage
-
-1. Sensing
-2. GUI
+- WiSpy
+- TelosB with spectrum sensing application
+- Rohde & Schwarz FSV Spectrum Analyser
 
 # Installation
 
@@ -15,8 +14,11 @@ For GUI:
 
     sudo apt-get install python-pyside python-matplotlib
 
+# Development
+
 ## GUI update
 
 Run:
 
+    cd smuts_gui
     scons
