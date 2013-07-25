@@ -208,21 +208,48 @@ qwtPlotSpectrogram</string>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBoxEoF">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>EoF</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QCheckBox" name="checkBoxEoF">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>EoF</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBoxAutoTimer">
+          <property name="text">
+           <string>Auto Timer</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
          <widget class="QLabel" name="label_10">
           <property name="text">
-           <string>Data per Second:</string>
+           <string>Data arrival Time:</string>
           </property>
          </widget>
         </item>
@@ -240,7 +267,7 @@ qwtPlotSpectrogram</string>
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="labelDpS">
+         <widget class="QLabel" name="labelDaT">
           <property name="text">
            <string>0</string>
           </property>
@@ -249,7 +276,7 @@ qwtPlotSpectrogram</string>
         <item>
          <widget class="QLabel" name="label_13">
           <property name="text">
-           <string>dps</string>
+           <string>ms</string>
           </property>
          </widget>
         </item>
@@ -542,7 +569,6 @@ qwtPlotSpectrogram</string>
  </widget>
  <tabstops>
   <tabstop>hSliderHistory</tabstop>
-  <tabstop>checkBoxEoF</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -553,8 +579,8 @@ qwtPlotSpectrogram</string>
    <slot>WiSpyTest()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>943</x>
-     <y>127</y>
+     <x>969</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>668</x>
@@ -569,8 +595,8 @@ qwtPlotSpectrogram</string>
    <slot>WiSpyStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>943</x>
-     <y>94</y>
+     <x>969</x>
+     <y>62</y>
     </hint>
     <hint type="destinationlabel">
      <x>673</x>
@@ -585,8 +611,8 @@ qwtPlotSpectrogram</string>
    <slot>WiSpyStart()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>943</x>
-     <y>61</y>
+     <x>851</x>
+     <y>62</y>
     </hint>
     <hint type="destinationlabel">
      <x>672</x>
@@ -601,8 +627,8 @@ qwtPlotSpectrogram</string>
    <slot>WiSpyGoToEnd()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>943</x>
-     <y>160</y>
+     <x>851</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>669</x>
@@ -618,11 +644,11 @@ qwtPlotSpectrogram</string>
    <hints>
     <hint type="sourcelabel">
      <x>970</x>
-     <y>218</y>
+     <y>154</y>
     </hint>
     <hint type="destinationlabel">
-     <x>944</x>
-     <y>187</y>
+     <x>945</x>
+     <y>123</y>
     </hint>
    </hints>
   </connection>
@@ -634,7 +660,7 @@ qwtPlotSpectrogram</string>
    <hints>
     <hint type="sourcelabel">
      <x>970</x>
-     <y>218</y>
+     <y>154</y>
     </hint>
     <hint type="destinationlabel">
      <x>677</x>
@@ -649,8 +675,8 @@ qwtPlotSpectrogram</string>
    <slot>setHistorySize(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>837</x>
-     <y>331</y>
+     <x>970</x>
+     <y>297</y>
     </hint>
     <hint type="destinationlabel">
      <x>739</x>
@@ -666,11 +692,27 @@ qwtPlotSpectrogram</string>
    <hints>
     <hint type="sourcelabel">
      <x>970</x>
-     <y>331</y>
+     <y>297</y>
     </hint>
     <hint type="destinationlabel">
-     <x>955</x>
-     <y>272</y>
+     <x>956</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxAutoTimer</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MonitorMainUI</receiver>
+   <slot>autoSetTimer(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>924</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>813</x>
+     <y>414</y>
     </hint>
    </hints>
   </connection>
@@ -682,5 +724,6 @@ qwtPlotSpectrogram</string>
   <slot>WiSpyGoToEnd()</slot>
   <slot>setTimer(int)</slot>
   <slot>setHistorySize(int)</slot>
+  <slot>autoSetTimer(bool)</slot>
  </slots>
 </ui>

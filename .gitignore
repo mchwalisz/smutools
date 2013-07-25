@@ -1,2 +1,8 @@
+# Ignore data
+data*
+
+# Scons generated files
+.sconsign.dblite
+
 # Generated files:
 MonitorMainUI.py
