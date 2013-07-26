@@ -53,7 +53,8 @@ void Usage(void) {
 		   " -b / --broadcast             Listen for (and connect to) broadcast servers\n"
 		   " -l / --list				  List devices and ranges only\n"
 		   " -r / --range [device:]range  Configure a device for a specific range\n"
-		   "                              local USB devices\n");
+		   "                              local USB devices\n"
+		   " -d	/ --device			  device to use\n");
 	return;
 }
 
@@ -72,6 +73,7 @@ int main(int argc, char *argv[]) {
 		{ "list", no_argument, 0, 'l' },
 		{ "range", required_argument, 0, 'r' },
 		{ "help", no_argument, 0, 'h' },
+		{ "device", required_argument, 0, 'd' },
 		{ 0, 0, 0, 0 }
 	};
 	int option_index;
@@ -84,6 +86,8 @@ int main(int argc, char *argv[]) {
 
 	int list_only = 0;
 
+	int scan_dev = -1;
+
 	ndev = spectool_device_scan(&list);
 
 	int *rangeset = NULL;
@@ -93,7 +97,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	while (1) {
-		int o = getopt_long(argc, argv, "n:bhr:l",
+		int o = getopt_long(argc, argv, "n:bhr:d:l",
 							long_options, &option_index);
 
 		if (o < 0)
@@ -110,6 +114,16 @@ int main(int argc, char *argv[]) {
 			continue;
 		} else if (o == 'l') {
 			list_only = 1;
+		} else if (o == 'd') {
+			if (sscanf(optarg, "%d", &scan_dev) != 1) {
+				fprintf(stderr, "Invalid device, expected device#\n");
+				exit(-1);
+			} else {
+				if (scan_dev < 0 || scan_dev >= ndev) {
+					fprintf(stderr, "Invalid device, no device %d\n", scan_dev);
+					exit(-1);
+				}
+			}
 		} else if (o == 'r' && ndev > 0) {
 			if (sscanf(optarg, "%d:%d", &x, &r) != 2) {
 				if (sscanf(optarg, "%d", &r) != 1) {
@@ -196,10 +210,42 @@ int main(int argc, char *argv[]) {
 			exit(1);
 		}
 
-		printf("Found %d spectool devices...\n", ndev);
+		printf("# Found %d spectool devices...\n", ndev);
 
+		if ( scan_dev == -1 ) {
 		for (x = 0; x < ndev; x++) {
-			printf("Initializing WiSPY device %s id %u\n", 
+			//TODO: Change device ID to something meaningfull
+			printf("# Initializing WiSPY device %s id %u\n", 
+				   list.list[x].name, list.list[x].device_id);
+
+			pi = (spectool_phy *) malloc(SPECTOOL_PHY_SIZE);
+			pi->next = devs;
+			devs = pi;
+
+			if (spectool_device_init(pi, &(list.list[x])) < 0) {
+				printf("Error initializing WiSPY device %s id %u\n",
+					   list.list[x].name, list.list[x].device_id);
+				printf("%s\n", spectool_get_error(pi));
+				exit(1);
+			}
+
+			if (spectool_phy_open(pi) < 0) {
+				printf("Error opening WiSPY device %s id %u\n",
+					   list.list[x].name, list.list[x].device_id);
+				printf("%s\n", spectool_get_error(pi));
+				exit(1);
+			}
+
+			spectool_phy_setcalibration(pi, 1);
+
+			/* configure the default sweep block */
+			spectool_phy_setposition(pi, rangeset[x], 0, 0);
+		    } 
+		} else {
+		        x = scan_dev;
+
+			//TODO: Change device ID to something meaningfull
+			printf("# Initializing WiSPY device %s id %u\n", 
 				   list.list[x].name, list.list[x].device_id);
 
 			pi = (spectool_phy *) malloc(SPECTOOL_PHY_SIZE);
@@ -358,7 +404,7 @@ int main(int argc, char *argv[]) {
 				r = spectool_phy_poll(di);
 
 				if ((r & SPECTOOL_POLL_CONFIGURED)) {
-					printf("Configured device %u (%s)\n", 
+					printf("# Configured device %u (%s)\n", 
 						   spectool_phy_getdevid(di), 
 						   spectool_phy_getname(di),
 						   di->device_spec->num_sweep_ranges);
@@ -371,7 +417,7 @@ int main(int argc, char *argv[]) {
 						continue;
 					}
 
-					printf("    %d%s-%d%s @ %0.2f%s, %d samples\n", 
+					printf("#    %d%s-%d%s @ %0.2f%s, %d samples\n", 
 						   ran->start_khz > 1000 ? 
 						   ran->start_khz / 1000 : ran->start_khz,
 						   ran->start_khz > 1000 ? "MHz" : "KHz",
@@ -392,7 +438,7 @@ int main(int argc, char *argv[]) {
 					sb = spectool_phy_getsweep(di);
 					if (sb == NULL)
 						continue;
-					printf("%s: ", spectool_phy_getname(di));
+					printf("%d %d %d %d ", (int) sb->tm_start.tv_sec, (int) sb->tm_start.tv_usec, (int) sb->tm_end.tv_sec, (int) sb->tm_end.tv_usec);
 					for (r = 0; r < sb->num_samples; r++) {
 						// printf("[%d %d %d %d] ", sb->sample_data[r], sb->amp_offset_mdbm, sb->amp_res_mdbm, sb->sample_data[r] * (sb->amp_res_mdbm / 1000) + (sb->amp_offset_mdbm / 1000));
 						printf("%d ", 
@@ -400,6 +446,7 @@ int main(int argc, char *argv[]) {
 											   sb->sample_data[r]));
 					}
 					printf("\n");
+					fflush(stdout);
 				}
 			} while ((r & SPECTOOL_POLL_ADDITIONAL));
 
