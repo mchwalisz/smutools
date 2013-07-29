@@ -10,7 +10,7 @@ import os
 import logging
 
 
-spectools_dir = "../wispy_spectools"  # Has to relative to the the wispy.py module
+spectools_dir = "./spectools"  # Has to relative to the the wispy.py module
 
 
 class sensing(threading.Thread):

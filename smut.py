@@ -36,13 +36,23 @@ __email__ = "chwalisz@tkn.tu-berlin.de"
 import glob
 import logging
 import time
-from tools import wispy
-from tools import rsfsv
+from wispy import wispy
+from rohdeschwarz import rsfsv
 try:
-    from tools import telos
+    from telos import telos
 except:
     # There is no TinyOS Environment set up, skip TelosB support
-    from tools import telos_fallback as telos
+    from telos import telos_fallback as telos
+try:
+    from docopt import docopt
+except:
+    print """
+    Please install docopt using:
+      pip install docopt==0.6.1
+    For more refer to:
+    https://github.com/docopt/docopt
+    """
+    raise
 
 
 def run_telos(telos_devs):
@@ -120,17 +130,6 @@ def main(args):
 
 
 if __name__ == "__main__":
-    try:
-        from docopt import docopt
-    except:
-        print """
-        Please install docopt using:
-          pip install docopt==0.6.1
-        For more refer to:
-        https://github.com/docopt/docopt
-        """
-        raise
-
     args = docopt(__doc__, version=__version__)
 
     log = logging.getLogger('sensing')
