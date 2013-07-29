@@ -79,7 +79,6 @@ def list_devs():
 
 
 def main():
-#    import plot
     logger = logging.getLogger('sensing')
     logger.setLevel(logging.DEBUG)
     # create console handler with a higher log level
@@ -91,18 +90,12 @@ def main():
     logger.addHandler(ch)
     dev_list = list_devs()
     wispy_thr = []
-#    plot_thr = []
     if not dev_list:
         logger.warning('No devices found, exiting...')
         return
     for x in dev_list:
         wispy_thr.append(sensing(name=str(x), wispy_nr=x))
         wispy_thr[-1].start()
-#    sensing.sema_install.acquire()
-#    for x in dev_list:
-#        plot_thr.append(plot.lplot(name = 'Wispy {0}'.format(x), fileName= 'data_wispy_%s_%s.txt'%(x,x)))
-#        plot_thr[-1].start()
-#    sensing.sema_install.release()
     while True:
         try:
             line = raw_input('Type "stop" to end:')
@@ -110,8 +103,6 @@ def main():
             break
         if 'stop' in line:
             break
-#    for x in plot_thr:
-#        x.stop()
     for x in wispy_thr:
         x.stop()
 

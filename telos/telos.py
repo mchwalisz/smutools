@@ -140,7 +140,6 @@ def list_devs():
 
 
 def main():
-    import plot
     logger = logging.getLogger('sensing')
     logger.setLevel(logging.DEBUG)
     # create console handler with a higher log level
@@ -151,19 +150,13 @@ def main():
     ch.setFormatter(formatter)
     logger.addHandler(ch)
     telos_thr = []
-    plot_thr = []
     for x in list_devs():
         telos_thr.append(sensing(name=x[0], telos_dev=x[1], fileName='data'))
         telos_thr[-1].start()
     if not telos_thr:
         logger.warning('No devices found, exiting...')
         return
-    sensing.sema_install.acquire()
     logger.debug("All telos started...")
-    for x in list_devs():
-        plot_thr.append(plot.lplot(name='Telos %s' % (x[0]), fileName='data_telos_%s.txt' % (x[0])))
-        plot_thr[-1].start()
-    sensing.sema_install.release()
     while True:
         try:
             line = raw_input('Type "stop" to end:')
@@ -171,8 +164,6 @@ def main():
             break
         if 'stop' in line:
             break
-    for x in plot_thr:
-        x.stop()
     for x in telos_thr:
         x.stop()
 
