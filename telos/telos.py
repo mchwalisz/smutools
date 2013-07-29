@@ -34,12 +34,12 @@ class sensing(threading.Thread):
             name='ttyUSB0',
             telos_dev='/dev/ttyUSB0',
             fileName='data'):
-        super(sensing, self).__init__(name=' '.join(['Telos', name]))
+        super(sensing, self).__init__(name='Telos %s' % (name))
         self.id = name
         self.telos_dev = telos_dev
         self._stop = threading.Event()
         self.fileName = fileName
-        self.log_filename = ''.join([self.fileName, '_telos_{0}.txt'.format(name)])
+        self.log_filename = '%s_telos_%s.txt' % (self.fileName, name)
         self.logger = logging.getLogger('sensing.telos')
 
     def stop(self):
@@ -53,8 +53,7 @@ class sensing(threading.Thread):
         #1. Make temp dir
         job_dir = tempfile.mkdtemp()
         work_dir = '%s/sensing' % job_dir
-        self.logger.info("START - file {0} - device {1} - work dir {2}".format(
-            self.log_filename, self.telos_dev, work_dir))
+        self.logger.info("START - file %s - device %s - work dir %s" % (self.log_filename, self.telos_dev, work_dir))
         shutil.copytree('/'.join([os.path.dirname(__file__), sensing_dir]), work_dir,
             ignore=shutil.ignore_patterns('*.pyc', 'tmp*', '.*', 'build', 'pp'))
         #2. make clean
@@ -64,8 +63,8 @@ class sensing(threading.Thread):
             stderr=subprocess.PIPE,
             shell=True,
             cwd=work_dir)
-        self.logger.log(logging.DEBUG-5, "{0} - {1}".format(self.id, proc.stdout.readline().rstrip()))
-        self.logger.log(logging.DEBUG-5, "{0} - {1}".format(self.id, proc.stderr.readline().rstrip()))
+        self.logger.log(logging.DEBUG-5, "%s - %s" % (self.id, proc.stdout.readline().rstrip()))
+        self.logger.log(logging.DEBUG-5, "%s - %s" % (self.id, proc.stderr.readline().rstrip()))
         proc.wait()
         #3. make install
         freq = range(2400, 2481, 2)
@@ -82,8 +81,8 @@ class sensing(threading.Thread):
                 shell=True,
                 cwd=work_dir)
             while True:
-                self.logger.log(logging.DEBUG-5, "{0} - {1}".format(self.id, proc.stdout.readline().rstrip()))
-                self.logger.log(logging.DEBUG-5, "{0} - {1}".format(self.id, proc.stderr.readline().rstrip()))
+                self.logger.log(logging.DEBUG-5, "%s - %s" % (self.id, proc.stdout.readline().rstrip()))
+                self.logger.log(logging.DEBUG-5, "%s - %s" % (self.id, proc.stderr.readline().rstrip()))
                 if proc.poll() is not None:
                     if proc.poll() == 0:
                         proc_done = True
@@ -116,8 +115,7 @@ class sensing(threading.Thread):
             stdout=log_file,
             stderr=subprocess.PIPE,
             cwd=work_dir)
-        self.logger.info("RUNNING - file {0} - device {1} - work dir {2}".format(
-            self.log_filename, self.telos_dev, work_dir))
+        self.logger.info("RUNNING - file %s - device %s - work dir %s" % (self.log_filename, self.telos_dev, work_dir))
         self.sema_install.release()
         self._stop.wait()
         proc.kill()
@@ -125,8 +123,7 @@ class sensing(threading.Thread):
         proc.wait()
         log_file.close()
         shutil.rmtree(job_dir)
-        self.logger.info("STOP - file {0} - device {1} - work dir {2}".format(
-            self.log_filename, self.telos_dev, work_dir))
+        self.logger.info("STOP - file %s - device %s - work dir %s" % (self.log_filename, self.telos_dev, work_dir))
 
 
 def list_devs():
@@ -164,7 +161,7 @@ def main():
     sensing.sema_install.acquire()
     logger.debug("All telos started...")
     for x in list_devs():
-        plot_thr.append(plot.lplot(name='Telos {0}'.format(x[0]), fileName='data_telos_{0}.txt'.format(x[0])))
+        plot_thr.append(plot.lplot(name='Telos %s' % (x[0]), fileName='data_telos_%s.txt' % (x[0])))
         plot_thr[-1].start()
     sensing.sema_install.release()
     while True:
