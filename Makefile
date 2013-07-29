@@ -20,6 +20,6 @@ clean-twist:
 	-rm -f twist_trace_parser
 
 PrintfClient.class: net/tinyos/tools/PrintfMsg.java net/tinyos/tools/PrintfClient.java
-	javac -cp .:./tinyos.jar net/tinyos/tools/PrintfMsg.java net/tinyos/tools/PrintfClient.java
+	javac -cp .:$(TOSROOT)/support/sdk/java/tinyos.jar net/tinyos/tools/PrintfMsg.java net/tinyos/tools/PrintfClient.java
 
 .PHONY: clean clean-twist
