@@ -11,7 +11,7 @@ import tempfile
 import shutil
 import logging
 
-sensing_dir = '../telos_spectrum_monitor/'  # Has to relative to the the telos.py module
+sensing_dir = './specmonapp/'  # Has to relative to the the telos.py module
 
 
 class sensing(threading.Thread):
@@ -21,8 +21,8 @@ class sensing(threading.Thread):
 
     cmd_make = 'make telosb  install bsl,'  # telos_dev missing
     cmd_make_clean = 'make clean'
-    cmd_printf = ['java', '-cp', '.:./tinyos.jar', 'net.tinyos.tools.PrintfClient', '-comm', 'sf@localhost:{0}']  # 'serial@{0}:115200']
-    cmd_sf = [''.join([os.environ['TOSDIR'], '/../support/sdk/c/sf/sf'])]  # port, dev, speed (115200)
+    cmd_printf = ['java', '-cp', '.:%s/%s/tinyos.jar' % (os.environ['TOSROOT'], 'support/sdk/java'), 'net.tinyos.tools.PrintfClient', '-comm', 'sf@localhost:{0}']  # 'serial@{0}:115200']
+    cmd_sf = ['%s/%s' % (os.environ['TOSROOT'], 'support/sdk/c/sf/sf')]  # port, dev, speed (115200)
     log_txt = '''#Frequencies (in MHz): {0}
 # Data format: one line per sweep (scanning all frequencies in the order above), every entry represents
 #              the average RF power (in dBm) measured on a frequency over a period of 192 microseconds.
