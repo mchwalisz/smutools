@@ -107,13 +107,13 @@ def main(args):
     if args['--gui']:
         import sys
         from PySide import QtGui
-        import MonitorGUI
+        from smuts_gui import smut_mon
         time.sleep(2)
         app = QtGui.QApplication(sys.argv)
         apps = []
         for x in threads:
             log.info("Starting GUI")
-            apps.append(MonitorGUI.MonitorMainWindow(filename=x.log_filename))
+            apps.append(smut_mon.MonitorMainWindow(filename=x.log_filename))
             apps[-1].show()
         app.exec_()
     else:
