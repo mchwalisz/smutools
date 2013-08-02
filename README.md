@@ -20,16 +20,28 @@ Do not forget to load TinyOS
 # Installation
 
 1. General tools:
-    
+
+        sudo apt-get install pip build-essential libusb-dev
         pip install docopt==0.6.1
 2. Telos
     - TinyOS
 3. Wispy
     - spectools (included but not compiled)
+    - compile with
+
+        cd wispy/spectools
+        ./configure
+        make
+        cd ../..
+    - add udev rules
+
+        sudo cp wispy/spectools/pkg-hildon/etc/udev/rules.d/99-wispy.rules /etc/udev/rules.d/99-wispy.rules
 4. RS FSV
 5. SMUTS_gui
 
-        sudo apt-get install python-pyside python-matplotlib
+        sudo apt-get install python-pyside python-matplotlib scons
+        cd smuts_gui
+        scons
 
 # Development
 
