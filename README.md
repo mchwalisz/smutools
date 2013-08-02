@@ -29,13 +29,13 @@ Do not forget to load TinyOS
     - spectools (included but not compiled)
     - compile with
 
-        cd wispy/spectools
-        ./configure
-        make
-        cd ../..
+            cd wispy/spectools
+            ./configure
+            make
+            cd ../..
     - add udev rules
 
-        sudo cp wispy/spectools/pkg-hildon/etc/udev/rules.d/99-wispy.rules /etc/udev/rules.d/99-wispy.rules
+            sudo cp wispy/spectools/pkg-hildon/etc/udev/rules.d/99-wispy.rules /etc/udev/rules.d/99-wispy.rules
 4. RS FSV
 5. SMUTS_gui
 
