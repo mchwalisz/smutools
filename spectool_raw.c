@@ -60,7 +60,7 @@ void Usage(void) {
 
 int main(int argc, char *argv[]) {
 	spectool_device_list list;
-	int x = 0, r = 0;
+	int x = 0, r = 0, i = 0;
 	spectool_sample_sweep *sb;
 	spectool_server sr;
 	char errstr[SPECTOOL_ERROR_MAX];
@@ -439,8 +439,10 @@ int main(int argc, char *argv[]) {
 					if (sb == NULL)
 						continue;
 					printf("%d %d %d %d ", (int) sb->tm_start.tv_sec, (int) sb->tm_start.tv_usec, (int) sb->tm_end.tv_sec, (int) sb->tm_end.tv_usec);
-					for (r = 0; r < sb->num_samples; r++) {
-						// printf("[%d %d %d %d] ", sb->sample_data[r], sb->amp_offset_mdbm, sb->amp_res_mdbm, sb->sample_data[r] * (sb->amp_res_mdbm / 1000) + (sb->amp_offset_mdbm / 1000));
+					// printf("amp_offset_mdbm:%d, amp_res_mdbm:%d, num_samples:%d, dev name:%s, samples_per_point:%d, min_rssi_seen:%d, rssi_max:%d \n", \
+						// sb->amp_offset_mdbm, sb->amp_res_mdbm, sb->num_samples, spectool_phy_getname(di), sb->samples_per_point, sb->min_rssi_seen, sb->rssi_max);
+					for (i = 0; i < sb->num_samples; i++) {
+						// printf("[sample:%d rssi:%4.2f]", sb->sample_data[i], (double)sb->sample_data[i] * ((double)sb->amp_res_mdbm / 1000.0f) + ((double)sb->amp_offset_mdbm / 1000.0f));
 						printf("%4.1f ",
 							SPECTOOL_RSSI_CONVERT_DOUBLE(sb->amp_offset_mdbm, sb->amp_res_mdbm,
 											   sb->sample_data[r]));
