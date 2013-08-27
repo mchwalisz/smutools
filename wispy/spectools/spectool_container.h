@@ -28,7 +28,7 @@
 #include <inttypes.h>
 #endif
 
-/* A sweep record.  Because the sample array is allocated dynamically we 
+/* A sweep record.  Because the sample array is allocated dynamically we
  * re-use this same record as the definition of what sweep ranges a device
  * can handle.
  */
@@ -73,6 +73,9 @@ typedef struct _spectool_sample_sweep {
 } spectool_sample_sweep;
 
 #define SPECTOOL_RSSI_CONVERT(O,R,D)	(int) ((D) * ((double) (R) / 1000.0f) + \
+										   ((double) (O) / 1000.0f))
+
+#define SPECTOOL_RSSI_CONVERT_DOUBLE(O,R,D)	(double) ((D) * ((double) (R) / 1000.0f) + \
 										   ((double) (O) / 1000.0f))
 
 #define SPECTOOL_SWEEP_SIZE(y)		(sizeof(spectool_sample_sweep) + (y))
@@ -127,7 +130,7 @@ typedef struct _spectool_dev_spec {
 
 	spectool_sample_sweep *default_range;
 
-	/* Number of sweep ranges this device supports. 
+	/* Number of sweep ranges this device supports.
 	 * Gen1 supports 1 range.
 	 */
 	unsigned int num_sweep_ranges;
@@ -187,7 +190,7 @@ int spectool_phy_poll(spectool_phy *phydev);
 int spectool_phy_getpollfd(spectool_phy *phydev);
 spectool_sample_sweep *spectool_phy_getsweep(spectool_phy *phydev);
 void spectool_phy_setcalibration(spectool_phy *phydev, int enable);
-int spectool_phy_setposition(spectool_phy *phydev, int in_profile, 
+int spectool_phy_setposition(spectool_phy *phydev, int in_profile,
 						  int start_khz, int res_hz);
 char *spectool_phy_getname(spectool_phy *phydev);
 void spectool_phy_setname(spectool_phy *phydev, char *name);
@@ -262,9 +265,9 @@ struct spectool_channels {
 };
 
 /* Some channel lists */
-static int chan_freqs_24[] = { 
+static int chan_freqs_24[] = {
 	2411000, 2416000, 2421000, 2426000, 2431000, 2436000, 2441000,
-	2446000, 2451000, 2456000, 2461000, 2466000, 2471000, 2483000 
+	2446000, 2451000, 2456000, 2461000, 2466000, 2471000, 2483000
 };
 
 static char *chan_text_24[] = {
@@ -278,8 +281,8 @@ static int chan_freqs_5[] = {
 };
 
 static char *chan_text_5[] = {
-	"36", "40", "44", "48", "52", "56", "60", "64", "100", "104", 
-	"108", "112", "116", "120", "124", "128", "132", "136", "140", 
+	"36", "40", "44", "48", "52", "56", "60", "64", "100", "104",
+	"108", "112", "116", "120", "124", "128", "132", "136", "140",
 	"149", "153", "157", "161", "165"
 };
 
