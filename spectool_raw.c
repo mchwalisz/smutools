@@ -155,21 +155,21 @@ int main(int argc, char *argv[]) {
 		printf("Found %d devices...\n", ndev);
 
 		for (x = 0; x < ndev; x++) {
-			printf("Device %d: %s id %u\n", 
+			printf("Device %d: %s id %u\n",
 				   x, list.list[x].name, list.list[x].device_id);
 
 			for (r = 0; r < list.list[x].num_sweep_ranges; r++) {
-				spectool_sample_sweep *ran = 
+				spectool_sample_sweep *ran =
 					&(list.list[x].supported_ranges[r]);
 
-				printf("  Range %d: \"%s\" %d%s-%d%s @ %0.2f%s, %d samples\n", r, 
+				printf("  Range %d: \"%s\" %d%s-%d%s @ %0.2f%s, %d samples\n", r,
 					   ran->name,
-					   ran->start_khz > 1000 ? 
+					   ran->start_khz > 1000 ?
 					   ran->start_khz / 1000 : ran->start_khz,
 					   ran->start_khz > 1000 ? "MHz" : "KHz",
 					   ran->end_khz > 1000 ? ran->end_khz / 1000 : ran->end_khz,
 					   ran->end_khz > 1000 ? "MHz" : "KHz",
-					   (ran->res_hz / 1000) > 1000 ? 
+					   (ran->res_hz / 1000) > 1000 ?
 					   		((float) ran->res_hz / 1000) / 1000 : ran->res_hz / 1000,
 					   (ran->res_hz / 1000) > 1000 ? "MHz" : "KHz",
 					   ran->num_samples);
@@ -215,7 +215,7 @@ int main(int argc, char *argv[]) {
 		if ( scan_dev == -1 ) {
 		for (x = 0; x < ndev; x++) {
 			//TODO: Change device ID to something meaningfull
-			printf("# Initializing WiSPY device %s id %u\n", 
+			printf("# Initializing WiSPY device %s id %u\n",
 				   list.list[x].name, list.list[x].device_id);
 
 			pi = (spectool_phy *) malloc(SPECTOOL_PHY_SIZE);
@@ -240,12 +240,12 @@ int main(int argc, char *argv[]) {
 
 			/* configure the default sweep block */
 			spectool_phy_setposition(pi, rangeset[x], 0, 0);
-		    } 
+		    }
 		} else {
 		        x = scan_dev;
 
 			//TODO: Change device ID to something meaningfull
-			printf("# Initializing WiSPY device %s id %u\n", 
+			printf("# Initializing WiSPY device %s id %u\n",
 				   list.list[x].name, list.list[x].device_id);
 
 			pi = (spectool_phy *) malloc(SPECTOOL_PHY_SIZE);
@@ -272,7 +272,7 @@ int main(int argc, char *argv[]) {
 			spectool_phy_setposition(pi, rangeset[x], 0, 0);
 		}
 
-		spectool_device_scan_free(&list); 
+		spectool_device_scan_free(&list);
 	}
 
 	/* Naive poll that doesn't use select() to find pending data */
@@ -404,12 +404,12 @@ int main(int argc, char *argv[]) {
 				r = spectool_phy_poll(di);
 
 				if ((r & SPECTOOL_POLL_CONFIGURED)) {
-					printf("# Configured device %u (%s)\n", 
-						   spectool_phy_getdevid(di), 
+					printf("# Configured device %u (%s)\n",
+						   spectool_phy_getdevid(di),
 						   spectool_phy_getname(di),
 						   di->device_spec->num_sweep_ranges);
 
-					spectool_sample_sweep *ran = 
+					spectool_sample_sweep *ran =
 						spectool_phy_getcurprofile(di);
 
 					if (ran == NULL) {
@@ -417,13 +417,13 @@ int main(int argc, char *argv[]) {
 						continue;
 					}
 
-					printf("#    %d%s-%d%s @ %0.2f%s, %d samples\n", 
-						   ran->start_khz > 1000 ? 
+					printf("#    %d%s-%d%s @ %0.2f%s, %d samples\n",
+						   ran->start_khz > 1000 ?
 						   ran->start_khz / 1000 : ran->start_khz,
 						   ran->start_khz > 1000 ? "MHz" : "KHz",
 						   ran->end_khz > 1000 ? ran->end_khz / 1000 : ran->end_khz,
 						   ran->end_khz > 1000 ? "MHz" : "KHz",
-						   (ran->res_hz / 1000) > 1000 ? 
+						   (ran->res_hz / 1000) > 1000 ?
 						   	((float) ran->res_hz / 1000) / 1000 : ran->res_hz / 1000,
 						   (ran->res_hz / 1000) > 1000 ? "MHz" : "KHz",
 						   ran->num_samples);
@@ -454,5 +454,5 @@ int main(int argc, char *argv[]) {
 	}
 
 	return 0;
-}	
+}
 
