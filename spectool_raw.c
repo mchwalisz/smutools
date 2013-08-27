@@ -441,8 +441,8 @@ int main(int argc, char *argv[]) {
 					printf("%d %d %d %d ", (int) sb->tm_start.tv_sec, (int) sb->tm_start.tv_usec, (int) sb->tm_end.tv_sec, (int) sb->tm_end.tv_usec);
 					for (r = 0; r < sb->num_samples; r++) {
 						// printf("[%d %d %d %d] ", sb->sample_data[r], sb->amp_offset_mdbm, sb->amp_res_mdbm, sb->sample_data[r] * (sb->amp_res_mdbm / 1000) + (sb->amp_offset_mdbm / 1000));
-						printf("%d ", 
-							SPECTOOL_RSSI_CONVERT(sb->amp_offset_mdbm, sb->amp_res_mdbm,
+						printf("%4.1f ",
+							SPECTOOL_RSSI_CONVERT_DOUBLE(sb->amp_offset_mdbm, sb->amp_res_mdbm,
 											   sb->sample_data[r]));
 					}
 					printf("\n");

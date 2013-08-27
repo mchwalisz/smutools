@@ -75,6 +75,9 @@ typedef struct _spectool_sample_sweep {
 #define SPECTOOL_RSSI_CONVERT(O,R,D)	(int) ((D) * ((double) (R) / 1000.0f) + \
 										   ((double) (O) / 1000.0f))
 
+#define SPECTOOL_RSSI_CONVERT_DOUBLE(O,R,D)	(double) ((D) * ((double) (R) / 1000.0f) + \
+										   ((double) (O) / 1000.0f))
+
 #define SPECTOOL_SWEEP_SIZE(y)		(sizeof(spectool_sample_sweep) + (y))
 
 /* Sweep record for aggregating multiple sweep points */
