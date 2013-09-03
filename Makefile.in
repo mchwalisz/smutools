@@ -1,6 +1,6 @@
 # spectrum-tools
 
-DEBUG=-D_DEBUG
+#DEBUG=-D_DEBUG
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
