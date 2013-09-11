@@ -85,6 +85,13 @@ def main(args):
             print("Telos node: id={0}, devive={1}".format(tdev[0], tdev[1]))
         for wdev in wispy_devs:
             print("Wispy node: id={0}".format(wdev))
+        if not telos_devs and not wispy_devs:
+            log.info("No devices found. Exiting...")
+        exit()
+    if not telos_devs and not wispy_devs:
+        log.warning("No devices found. Exiting...")
+        print "Please connect any device and run with:"
+        print __doc__
         exit()
     #Check fileNamePrefix
     flist = glob.glob("%s_*.txt" % (args['--prefix']))
