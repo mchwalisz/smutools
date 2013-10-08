@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-smut.py: Starts sensing process for all measurement connected devices
+smut.py: Starts sensing process for all connected devices
 
 Supports:
 - WiSpy
@@ -9,7 +9,7 @@ Supports:
 - R&S FSV
 
 
-Usage: sensing.py [options]
+Usage: smut.py [options]
 
 Options:
   -p PREFIX, --prefix=PREFIX  select PREFIX as the file name
@@ -30,7 +30,7 @@ Other options:
 
 __author__ = "Mikolaj Chwalisz"
 __copyright__ = "Copyright (c) 2012-2013, Technische Universität Berlin"
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __email__ = "chwalisz@tkn.tu-berlin.de"
 
 import glob
@@ -88,7 +88,7 @@ def main(args):
         if not telos_devs and not wispy_devs:
             log.info("No devices found. Exiting...")
         exit()
-    if not telos_devs and not wispy_devs:
+    if not telos_devs and not wispy_devs and not args['--fsv']:
         log.warning("No devices found. Exiting...")
         print "Please connect any device and run with:"
         print __doc__
