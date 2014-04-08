@@ -1,0 +1,3 @@
+[submodule "crewcdf_toolbox"]
+	path = crewcdf_toolbox
+	url = https://github.com/mchwalisz/crewcdf_toolbox.git
