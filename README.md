@@ -29,36 +29,14 @@ Do not forget to load TinyOS
         cmake .
         make
         sudo make install
-    - TinyOS
-
-# Development
-
-Subtrees:
-
-    git remote add spectools git@bitbucket.org:chwalisz/spectools.git
-    git subtree add --prefix wispy/spectools spectools master
-
-    git remote add specmonapp git@bitbucket.org:chwalisz/specmonapp.git
-    git subtree add --prefix telos/specmonapp specmonapp master
-
-The command to update the sub-project at a later date becomes:
-
-    git fetch spectools master
-    git subtree pull --prefix wispy/spectools spectools master
-
-    git fetch specmonapp master
-    git subtree pull --prefix telos/specmonapp specmonapp master
-
-Now we can use the subtree push command like the following:
-
-    git subtree push --prefix wispy/spectools spectools master
-
-    git subtree push --prefix telos/specmonapp specmonapp master
 
 
-## GUI update
+# Usage
 
-Run:
+The main script is called `smut.py`.
+It will run spectrum sensing applications on all possible (connected) devices.
+For further documentation refer to `./smut.py --help`.
 
-    cd smuts_gui
-    scons
+Additionally to the smutools there is `crewcdf_toolbox` for processing the data.
+To LOAD the toolbox run `crewcdf_toolbox_load.m` in Matlab.
+Then it is possible to run  `crewcdf_plotall()` to generate summary plots for all data in given directory and its subdirectories.
