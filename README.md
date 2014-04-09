@@ -1,4 +1,4 @@
-# SMUTS - Spectrum MeasUrement ToolS
+# SMUTools - Spectrum MeasUrement Tools
 
 Python scripts that aim to help running spectrum sensing experiments.
 
@@ -21,27 +21,15 @@ Do not forget to load TinyOS
 
 1. General tools:
 
-        sudo apt-get install pip build-essential libusb-dev
-        pip install docopt==0.6.1
-2. Telos
+        sudo apt-get install python-pip build-essential libusb-dev pyside-tools python-pyside python-matplotlib cmake
+        sudo pip install docopt==0.6.1
+
+2. Compile:
+
+        cmake .
+        make
+        sudo make install
     - TinyOS
-3. Wispy
-    - spectools (included but not compiled)
-    - compile with
-
-            cd wispy/spectools
-            ./configure
-            make
-            cd ../..
-    - add udev rules
-
-            sudo cp wispy/spectools/pkg-hildon/etc/udev/rules.d/99-wispy.rules /etc/udev/rules.d/99-wispy.rules
-4. RS FSV
-5. SMUTS_gui
-
-        sudo apt-get install python-pyside python-matplotlib scons
-        cd smuts_gui
-        scons
 
 # Development
 
