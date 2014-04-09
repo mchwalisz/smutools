@@ -8,14 +8,6 @@ There are tools for different device types like:
 - TelosB with spectrum sensing application
 - Rohde & Schwarz FSV Spectrum Analyser
 
-# Running
-
-## Telos
-
-Do not forget to load TinyOS
-
-    source /opt/tinyos-main/tinyos.sh
-
 
 # Installation
 
@@ -40,3 +32,9 @@ For further documentation refer to `./smut.py --help`.
 Additionally to the smutools there is `crewcdf_toolbox` for processing the data.
 To LOAD the toolbox run `crewcdf_toolbox_load.m` in Matlab.
 Then it is possible to run  `crewcdf_plotall()` to generate summary plots for all data in given directory and its subdirectories.
+
+## Telos devices
+
+Do not forget to load TinyOS
+
+    source /opt/tinyos-main/tinyos.sh
