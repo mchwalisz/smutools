@@ -9,7 +9,9 @@ Supports:
 - R&S FSV
 
 
-Usage: smut.py [options]
+Usage:
+  smut.py [options]
+  smut.py --plot
 
 Options:
   -p PREFIX, --prefix=PREFIX  select PREFIX as the file name
@@ -20,6 +22,8 @@ Options:
   --fsvport=FSVPORT           port number [default: 5025]
   -g, --gui                   run monitor gui
   -l, --list                  list all available devices
+  --plot                      use Matlab to plot summaries of all data in
+                                current and all sub-folders
 
 Other options:
   -q, --quiet               print less text
@@ -76,6 +80,17 @@ def run_wispy(wispy_devs):
         wispy_thr[-1].start()
     return wispy_thr
 
+def matlab_plot():
+    """matlab_plot() -> docstring"""
+    import os
+    import subprocess
+    matcmd = "run('%s/crewcdf_toolbox/crewcdf_toolbox_load.m'); crewcdf_plotall(); quit();" % os.path.dirname(os.path.realpath(__file__.rstrip("c")))
+    cmd = "matlab -nodisplay -nosplash -r \"%s\"" % matcmd
+    print(cmd)
+    p = subprocess.Popen(cmd, shell=True)
+    p.wait()
+# def matlab_plot
+
 
 def main(args):
     telos_devs = telos.list_devs()
@@ -87,6 +102,9 @@ def main(args):
             print("Wispy node: id={0}".format(wdev))
         if not telos_devs and not wispy_devs:
             log.info("No devices found. Exiting...")
+        exit()
+    if args['--plot']:
+        matlab_plot()
         exit()
     if not telos_devs and not wispy_devs and not args['--fsv']:
         log.warning("No devices found. Exiting...")
