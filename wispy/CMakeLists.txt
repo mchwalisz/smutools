@@ -8,11 +8,11 @@ ExternalProject_Add(
 	SOURCE_DIR spectools
 	BINARY_DIR spectools
 	CONFIGURE_COMMAND <SOURCE_DIR>/configure
-	BUILD_COMMAND make
+	BUILD_COMMAND $(MAKE)
 	INSTALL_COMMAND ""
 )
-ExternalProject_Add_Step(spectools "target check"
-	COMMAND cat config.log | grep spectool_raw
+ExternalProject_Add_Step(spectools "'spectool_raw' target check"
+	COMMAND grep spectool_raw config.log
 	DEPENDEES configure
 	DEPENDERS build
 	WORKING_DIRECTORY <SOURCE_DIR>

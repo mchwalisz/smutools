@@ -3,6 +3,8 @@ project(smutools)
 
 
 find_package(PythonInterp REQUIRED)
+include(find_python_module.cmake)
+find_python_module(docopt REQUIRED)
 
 add_custom_target(smut ALL
 	COMMAND ${PYTHON_EXECUTABLE} -m compileall smut.py

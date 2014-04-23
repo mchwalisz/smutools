@@ -4,6 +4,7 @@ project(smuts_gui)
 find_package(PythonInterp REQUIRED)
 # PySide-compatible .ui -> .py generation
 find_program(PYUIC "pyside-uic" )
+find_python_module(PySide.QtGui REQUIRED)
 
 add_custom_command(
 	OUTPUT tools/MonitorMainUI.py
