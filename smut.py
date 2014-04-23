@@ -82,10 +82,10 @@ def run_wispy(wispy_devs):
 
 def matlab_plot():
     """matlab_plot() -> docstring"""
-    import os
+    from os.path import realpath, dirname
     import subprocess
-    matcmd = "run('%s/crewcdf_toolbox/crewcdf_toolbox_load.m'); crewcdf_plotall(); quit();" % os.path.dirname(os.path.realpath(__file__.rstrip("c")))
-    cmd = "matlab -nodisplay -nosplash -r \"%s\"" % matcmd
+    matcmd = "run('%s/crewcdf_toolbox/crewcdf_toolbox_load.m'); crewcdf_plotall(); quit();" % dirname(realpath(__file__.rstrip("c")))
+    cmd = "matlab -r \"%s\"" % matcmd
     print(cmd)
     p = subprocess.Popen(cmd, shell=True)
     p.wait()
