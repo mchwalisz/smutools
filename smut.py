@@ -66,7 +66,8 @@ def run_telos(telos_devs):
         return []
     telos_thr = []
     for tdev in telos_devs:
-        telos_thr.append(telos.sensing(name=tdev[0], telos_dev=tdev[1], fileName=args['--prefix']))
+        telos_thr.append(telos.sensing(name=tdev[0], telos_dev=tdev[1],
+            fileName=args['--prefix']))
         telos_thr[-1].start()
     return telos_thr
 
@@ -77,15 +78,18 @@ def run_wispy(wispy_devs):
         return []
     wispy_thr = []
     for wdev in wispy_devs:
-        wispy_thr.append(wispy.sensing(name=str(wdev), wispy_nr=wdev, fileName=args['--prefix'], band=args['--wispy-band']))
+        wispy_thr.append(wispy.sensing(name=str(wdev), wispy_nr=wdev,
+            fileName=args['--prefix'], band=args['--wispy-band']))
         wispy_thr[-1].start()
     return wispy_thr
+
 
 def matlab_plot():
     """matlab_plot() -> docstring"""
     from os.path import realpath, dirname
     import subprocess
-    matcmd = "run('%s/crewcdf_toolbox/crewcdf_toolbox_load.m'); crewcdf_plotall(); quit();" % dirname(realpath(__file__.rstrip("c")))
+    matcmd = "run('%s/crewcdf_toolbox/crewcdf_toolbox_load.m'); crewcdf_plotall(); quit();" \
+        % dirname(realpath(__file__.rstrip("c")))
     cmd = "matlab -r \"%s\"" % matcmd
     print(cmd)
     p = subprocess.Popen(cmd, shell=True)
@@ -115,7 +119,8 @@ def main(args):
     #Check fileNamePrefix
     flist = glob.glob("%s_*.txt" % (args['--prefix']))
     if flist and not args['--force-overwrite']:
-        log.error("Data with selected prefix (%s) exist:\n%s\nExiting..." % (args['--prefix'], flist))
+        log.error("Data with selected prefix (%s) exist:\n%s\nExiting..."
+            % (args['--prefix'], flist))
         exit(1)
     threads = []
     threads.extend(run_telos(telos_devs))
