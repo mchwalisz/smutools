@@ -22,6 +22,7 @@ Options:
   --fsvport=FSVPORT           port number [default: 5025]
   -g, --gui                   run monitor gui
   -l, --list                  list all available devices
+  --wispy-band=BAND           band range to use for WiSpy [default: 0]
   --plot                      use Matlab to plot summaries of all data in
                                 current and all sub-folders
 
@@ -76,7 +77,7 @@ def run_wispy(wispy_devs):
         return []
     wispy_thr = []
     for wdev in wispy_devs:
-        wispy_thr.append(wispy.sensing(name=str(wdev), wispy_nr=wdev, fileName=args['--prefix']))
+        wispy_thr.append(wispy.sensing(name=str(wdev), wispy_nr=wdev, fileName=args['--prefix'], band=args['--wispy-band']))
         wispy_thr[-1].start()
     return wispy_thr
 

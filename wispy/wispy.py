@@ -18,10 +18,11 @@ class sensing(threading.Thread):
     classdocs
     '''
 
-    def __init__(self, name='0', wispy_nr='0', fileName='data'):
+    def __init__(self, name='0', wispy_nr='0', fileName='data', band='0'):
         threading.Thread.__init__(self, name=' '.join(['Wispy', name]))
         self.wispy_nr = wispy_nr
         self.fileName = fileName
+        self.band = band
         self._stop = threading.Event()
         self.log_filename = ''.join([self.fileName, '_wispy_%s_%s.txt' % (name, self.wispy_nr)])
         self.logger = logging.getLogger('sensing.wispy')
@@ -42,7 +43,7 @@ class sensing(threading.Thread):
         # Run sensing
         cmd_run = [
             '/'.join([os.path.dirname(__file__), spectools_dir, "spectool_raw"]),
-            "-d", self.wispy_nr, "-r", "0"
+            "-d", self.wispy_nr, "-r", self.band
         ]
         self.logger.debug(' '.join(cmd_run))
         proc = subprocess.Popen(cmd_run,
