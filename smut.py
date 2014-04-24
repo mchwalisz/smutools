@@ -88,9 +88,14 @@ def matlab_plot():
     """matlab_plot() -> docstring"""
     from os.path import realpath, dirname
     import subprocess
-    matcmd = "run('%s/crewcdf_toolbox/crewcdf_toolbox_load.m'); crewcdf_plotall(); quit();" \
-        % dirname(realpath(__file__.rstrip("c")))
-    cmd = "matlab -r \"%s\"" % matcmd
+    matcmd = (
+        "run('%s/crewcdf_toolbox/crewcdf_toolbox_load.m');"
+        "set(0, 'DefaultFigureVisible', 'off');"
+        "crewcdf_plotall();"
+        "quit();"
+        ) % dirname(realpath(__file__.rstrip("c")))
+    # matlab -nodesktop -nodisplay -nosplash
+    cmd = "matlab -nodesktop -nosplash -r \"%s\"" % matcmd
     print(cmd)
     p = subprocess.Popen(cmd, shell=True)
     p.wait()
