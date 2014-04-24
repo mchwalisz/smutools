@@ -35,7 +35,7 @@ Other options:
 
 __author__ = "Mikolaj Chwalisz"
 __copyright__ = "Copyright (c) 2012-2013, Technische Universität Berlin"
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 __email__ = "chwalisz@tkn.tu-berlin.de"
 
 import glob
