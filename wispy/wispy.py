@@ -78,6 +78,13 @@ def list_devs():
             dev_list.append(x)
     return dev_list
 
+def list_wispy():
+    cmd_nodes = ''.join([
+        '/'.join([os.path.dirname(__file__), spectools_dir, "spectool_raw"]),
+        " -l "
+    ])
+    out = subprocess.Popen(cmd_nodes, stdout=subprocess.PIPE, shell=True).stdout.read()
+    return out.split('\n')
 
 def main():
     logger = logging.getLogger('sensing')

@@ -50,7 +50,8 @@ class MonitorMainWindow(QtGui.QMainWindow, MonitorMainUI.Ui_MonitorMainUI):
         self.verticalPlts.addWidget(self.qwtPlotPower)
         self.labelPlotPower.close()
 
-        self.qwtPlotSpectrogram = PlotSpectrogram.PlotSpectrogram(self.centralwidget)
+        self.qwtPlotSpectrogram = PlotSpectrogram.PlotSpectrogram(
+            self.centralwidget)
         self.verticalPlts.addWidget(self.qwtPlotSpectrogram)
         self.labelPlotSpectrogram.close()
 

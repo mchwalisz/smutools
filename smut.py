@@ -10,21 +10,23 @@ Supports:
 
 
 Usage:
-  smut.py [options]
+  smut.py [options] [<prefix>]
   smut.py --plot
 
+Arguments:
+  <prefix>                       select <prefix> as the file name
+                                   prefix for measurements [default: data]
+
 Options:
-  -p PREFIX, --prefix=PREFIX  select PREFIX as the file name
-                    prefix for measurements [default: data]
-  -F, --force-overwrite       force files with PREFIX to be
-                    overwritten (POSSIBLE LOSS OF DATA)
-  -f FSVHOST, --fsv=FSVHOST   connect to R&S FSV
-  --fsvport=FSVPORT           port number [default: 5025]
-  -g, --gui                   run monitor gui
-  -l, --list                  list all available devices
-  --wispy-band=BAND           band range to use for WiSpy [default: 0]
-  --plot                      use Matlab to plot summaries of all data in
-                                current and all sub-folders
+  -F, --force-overwrite          force files with given <prefix> to be
+                                   overwritten (POSSIBLE LOSS OF DATA)
+  -f <fsvhost>, --fsv=<fsvhost>  connect to R&S FSV
+  --fsvport=<fsvport>            port number [default: 5025]
+  -g, --gui                      run monitor gui
+  -l, --list                     list all available devices
+  --wispy-band=<band>            band range to use for WiSpy [default: 0]
+  --plot                         use Matlab to plot summaries of all data in
+                                   current and all sub-folders
 
 Other options:
   -q, --quiet               print less text
@@ -67,7 +69,7 @@ def run_telos(telos_devs):
     telos_thr = []
     for tdev in telos_devs:
         telos_thr.append(telos.sensing(name=tdev[0], telos_dev=tdev[1],
-            fileName=args['--prefix']))
+            fileName=args['<prefix>']))
         telos_thr[-1].start()
     return telos_thr
 
@@ -79,7 +81,7 @@ def run_wispy(wispy_devs):
     wispy_thr = []
     for wdev in wispy_devs:
         wispy_thr.append(wispy.sensing(name=str(wdev), wispy_nr=wdev,
-            fileName=args['--prefix'], band=args['--wispy-band']))
+            fileName=args['<prefix>'], band=args['--wispy-band']))
         wispy_thr[-1].start()
     return wispy_thr
 
@@ -110,6 +112,8 @@ def main(args):
             print("Telos node: id={0}, devive={1}".format(tdev[0], tdev[1]))
         for wdev in wispy_devs:
             print("Wispy node: id={0}".format(wdev))
+            for msg in wispy.list_wispy():
+                log.info(msg)
         if not telos_devs and not wispy_devs:
             log.info("No devices found. Exiting...")
         exit()
@@ -121,11 +125,12 @@ def main(args):
         print "Please connect any device and run with:"
         print __doc__
         exit()
-    #Check fileNamePrefix
-    flist = glob.glob("%s_*.txt" % (args['--prefix']))
+    if args['<prefix>'] is None:
+        args['<prefix>'] = 'data'
+    flist = glob.glob("%s_*.txt" % (args['<prefix>']))
     if flist and not args['--force-overwrite']:
         log.error("Data with selected prefix (%s) exist:\n%s\nExiting..."
-            % (args['--prefix'], flist))
+            % (args['<prefix>'], flist))
         exit(1)
     threads = []
     threads.extend(run_telos(telos_devs))
@@ -135,7 +140,7 @@ def main(args):
         threads.append(rsfsv.sensing(
             fsvhost=args['--fsv'],
             fsvport=args['--fsvport'],
-            fileName=args['--prefix']))
+            fileName=args['<prefix>']))
         threads[-1].start()
     if not threads:
         log.error("No devices found, exiting...")

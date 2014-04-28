@@ -14,5 +14,8 @@ class sensing(threading.Thread):
 
 def list_devs():
     logger = logging.getLogger('sensing.telos')
-    logger.warning("Using telos_fallback module, no telos nodes will be detected")
+    logger.warning(
+        "Using telos_fallback module,"
+        "no telos nodes will be detected"
+        )
     return []
