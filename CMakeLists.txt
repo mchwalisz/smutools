@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(smutools)
 
+find_package(Git)
 
 find_package(PythonInterp REQUIRED)
 include(find_python_module.cmake)
@@ -16,6 +17,6 @@ add_dependencies(smut wispy smuts_gui)
 
 add_custom_target(
 	crewcdf_toolbox
-	COMMAND git submodule update --init
+	COMMAND ${GIT_EXECUTABLE} submodule update --init
 )
 add_dependencies(smut crewcdf_toolbox)
