@@ -10,29 +10,35 @@ Supports:
 
 
 Usage:
-  smut.py [options] [<prefix>]
-  smut.py --plot
+  smut.py [options] <prefix>
+  smut.py [-q|-v] --plot [<dir> [<size>]]
+  smut.py [-q|-v] --list
+  smut.py -h | --help
+  smut.py --version
 
 Arguments:
-  <prefix>                       select <prefix> as the file name
-                                   prefix for measurements [default: data]
+  <prefix>                      select <prefix> as the file name
+                                  prefix for measurements
 
 Options:
-  -F, --force-overwrite          force files with given <prefix> to be
-                                   overwritten (POSSIBLE LOSS OF DATA)
+  -F, --force-overwrite         force files with given <prefix> to be
+                                  overwritten (POSSIBLE LOSS OF DATA)
+  -g, --gui                     run monitor gui
+  -l, --list                    list all available devices
+  -w <band>,--wispy-band=<band>  band range to use for WiSpy [default: 0]
   -f <fsvhost>, --fsv=<fsvhost>  connect to R&S FSV
-  --fsvport=<fsvport>            port number [default: 5025]
-  -g, --gui                      run monitor gui
-  -l, --list                     list all available devices
-  --wispy-band=<band>            band range to use for WiSpy [default: 0]
-  --plot                         use Matlab to plot summaries of all data in
-                                   current and all sub-folders
+  --fsvport=<fsvport>           port number [default: 5025]
+
+  --plot                        use Matlab to plot summaries of all data in
+                                  current and all sub-folders
+    <dir>                       directory where to look for data
+    <size>                      maximal size of the data
 
 Other options:
-  -q, --quiet               print less text
-  -v, --verbose             print more text
-  -h, --help                show this help message and exit
-  --version                 show version and exit
+  -q, --quiet                   print less text
+  -v, --verbose                 print more text
+  -h, --help                    show this help message and exit
+  --version                     show version and exit
 """
 
 __author__ = "Mikolaj Chwalisz"
@@ -86,16 +92,26 @@ def run_wispy(wispy_devs):
     return wispy_thr
 
 
-def matlab_plot():
+def matlab_plot(directory, size):
     """matlab_plot() -> docstring"""
     from os.path import realpath, dirname
     import subprocess
+    if directory is not None:
+        if size is not None:
+            args = "'%s',%s" % (directory, size)
+        else:
+            args = "'%s'" % directory
+    else:
+        args = ""
     matcmd = (
         "run('%s/crewcdf_toolbox/crewcdf_toolbox_load.m');"
         "set(0, 'DefaultFigureVisible', 'off');"
-        "crewcdf_plotall();"
+        "crewcdf_plotall(%s);"
         "quit();"
-        ) % dirname(realpath(__file__.rstrip("c")))
+        ) % (
+        dirname(realpath(__file__.rstrip("c"))),
+        args
+        )
     # matlab -nodesktop -nodisplay -nosplash
     cmd = "matlab -nodesktop -nosplash -r \"%s\"" % matcmd
     print(cmd)
@@ -118,7 +134,7 @@ def main(args):
             log.info("No devices found. Exiting...")
         exit()
     if args['--plot']:
-        matlab_plot()
+        matlab_plot(args['<dir>'], args['<size>'])
         exit()
     if not telos_devs and not wispy_devs and not args['--fsv']:
         log.warning("No devices found. Exiting...")
