@@ -21,10 +21,9 @@ class sensing(threading.Thread):
     def __init__(self, name='0', wispy_nr='0', fileName='data', band='0'):
         threading.Thread.__init__(self, name=' '.join(['Wispy', name]))
         self.wispy_nr = wispy_nr
-        self.fileName = fileName
         self.band = band
         self._stop = threading.Event()
-        self.log_filename = ''.join([self.fileName, '_wispy_%s_%s.txt' % (name, self.wispy_nr)])
+        self.filename = ''.join([fileName, '_wispy_%s_%s.txt' % (name, self.wispy_nr)])
         self.logger = logging.getLogger('sensing.wispy')
 
     def stop(self):
@@ -37,9 +36,9 @@ class sensing(threading.Thread):
 
     def run(self):
         self.sema_install.acquire()
-        self.logger.info('START - file {0} - device {1}'.format(self.log_filename, self.wispy_nr))
+        self.logger.info('START - file {0} - device {1}'.format(self.filename, self.wispy_nr))
         # Prepare log file
-        log_file = open(self.log_filename, 'w')
+        log_file = open(self.filename, 'w')
         # Run sensing
         cmd_run = [
             '/'.join([os.path.dirname(__file__), spectools_dir, "spectool_raw"]),
@@ -52,13 +51,13 @@ class sensing(threading.Thread):
                                 stdin=None,
                                 close_fds=True)
         self.sema_install.release()
-        self.logger.info('RUNNING - file {0} - device {1}'.format(self.log_filename, self.wispy_nr))
+        self.logger.info('RUNNING - file {0} - device {1}'.format(self.filename, self.wispy_nr))
         self._stop.wait()
         self.sema_install.acquire()
         proc.terminate()
         proc.wait()
         log_file.close()
-        self.logger.info('STOP - file {0} - device {1}'.format(self.log_filename, self.wispy_nr))
+        self.logger.info('STOP - file {0} - device {1}'.format(self.filename, self.wispy_nr))
         self.sema_install.release()
 
 

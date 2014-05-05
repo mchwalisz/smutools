@@ -76,6 +76,7 @@ def run_telos(telos_devs):
     for tdev in telos_devs:
         telos_thr.append(telos.sensing(name=tdev[0], telos_dev=tdev[1],
             fileName=args['<prefix>']))
+        log.debug(telos_thr[-1].filename)
         telos_thr[-1].start()
     return telos_thr
 
@@ -88,6 +89,7 @@ def run_wispy(wispy_devs):
     for wdev in wispy_devs:
         wispy_thr.append(wispy.sensing(name=str(wdev), wispy_nr=wdev,
             fileName=args['<prefix>'], band=args['--wispy-band']))
+        log.debug(wispy_thr[-1].filename)
         wispy_thr[-1].start()
     return wispy_thr
 
@@ -157,6 +159,7 @@ def main(args):
             fsvhost=args['--fsv'],
             fsvport=args['--fsvport'],
             fileName=args['<prefix>']))
+        log.debug(threads[-1].filename)
         threads[-1].start()
     if not threads:
         log.error("No devices found, exiting...")

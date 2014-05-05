@@ -38,8 +38,7 @@ class sensing(threading.Thread):
         self.id = name
         self.telos_dev = telos_dev
         self._stop = threading.Event()
-        self.fileName = fileName
-        self.log_filename = '%s_telos_%s.txt' % (self.fileName, name)
+        self.filename = '%s_telos_%s.txt' % (fileName, name)
         self.logger = logging.getLogger('sensing.telos')
 
     def stop(self):
@@ -53,7 +52,7 @@ class sensing(threading.Thread):
         #1. Make temp dir
         job_dir = tempfile.mkdtemp()
         work_dir = '%s/sensing' % job_dir
-        self.logger.info("START - file %s - device %s - work dir %s" % (self.log_filename, self.telos_dev, work_dir))
+        self.logger.info("START - file %s - device %s - work dir %s" % (self.filename, self.telos_dev, work_dir))
         shutil.copytree('/'.join([os.path.dirname(__file__), sensing_dir]), work_dir,
             ignore=shutil.ignore_patterns('*.pyc', 'tmp*', '.*', 'build', 'pp'))
         #2. make clean
@@ -91,7 +90,7 @@ class sensing(threading.Thread):
                 shutil.rmtree(job_dir)
                 return
         # Prepare log file
-        log_file = open(self.log_filename, 'w')
+        log_file = open(self.filename, 'w')
         log_file.write(self.log_txt.format(freq))
         log_file.seek(-1, 2)
         #4. Run serial forwarder and printf
@@ -115,7 +114,7 @@ class sensing(threading.Thread):
             stdout=log_file,
             stderr=subprocess.PIPE,
             cwd=work_dir)
-        self.logger.info("RUNNING - file %s - device %s - work dir %s" % (self.log_filename, self.telos_dev, work_dir))
+        self.logger.info("RUNNING - file %s - device %s - work dir %s" % (self.filename, self.telos_dev, work_dir))
         self.sema_install.release()
         self._stop.wait()
         proc.kill()
@@ -123,7 +122,7 @@ class sensing(threading.Thread):
         proc.wait()
         log_file.close()
         shutil.rmtree(job_dir)
-        self.logger.info("STOP - file %s - device %s - work dir %s" % (self.log_filename, self.telos_dev, work_dir))
+        self.logger.info("STOP - file %s - device %s - work dir %s" % (self.filename, self.telos_dev, work_dir))
 
 
 def list_devs():

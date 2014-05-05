@@ -45,9 +45,8 @@ class sensing(threading.Thread):
         threading.Thread.__init__(self, name=' '.join(['FSV', fsvhost]))
         self.fsvhost = fsvhost
         self.fsvport = int(fsvport)
-        self.fileName = fileName
         self._stop = threading.Event()
-        self.log_filename = '%s_fsv_%s.fsv' % (self.fileName, self.fsvhost)
+        self.filename = '%s_fsv_%s.fsv' % (fileName, self.fsvhost)
         self.logger = logging.getLogger('sensing.fsv')
         self.sock = socket.socket(
             socket.AF_INET, socket.SOCK_STREAM)
@@ -67,18 +66,18 @@ class sensing(threading.Thread):
     def run(self):
         idn = self.command("*IDN?")
         idn = ' '.join(idn.split(',')[0:3])
-        self.logger.info('START - file %s - %s' % (self.log_filename, idn))
+        self.logger.info('START - file %s - %s' % (self.filename, idn))
         self.getErrors()
-        outfile = open(self.log_filename, 'w')
+        outfile = open(self.filename, 'w')
 
         self.getMeta(outfile)
         self.sock.settimeout(10)
         self.sock.send("FORMat REAL,32\n")
-        self.logger.info('RUNNING - file %s - %s' % (self.log_filename, idn))
+        self.logger.info('RUNNING - file %s - %s' % (self.filename, idn))
         while not self.stopped():
             # self.command("SWE:TIME?")
             self.getData(outfile)
-        self.logger.info('STOP - file %s - %s' % (self.log_filename, idn))
+        self.logger.info('STOP - file %s - %s' % (self.filename, idn))
         outfile.close()
         self.close()
     # def run
