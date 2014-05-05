@@ -10,7 +10,7 @@ Supports:
 
 
 Usage:
-  smut.py [options] <prefix>
+  smut.py [-q|-v] [options] <prefix>
   smut.py [-q|-v] --plot [<dir> [<size>]]
   smut.py [-q|-v] --list
   smut.py -h | --help
@@ -29,7 +29,7 @@ Options:
   -f <fsvhost>, --fsv=<fsvhost>  connect to R&S FSV
   --fsvport=<fsvport>           port number [default: 5025]
 
-  --plot                        use Matlab to plot summaries of all data in
+  -p, --plot                    use Matlab to plot summaries of all data in
                                   current and all sub-folders
     <dir>                       directory where to look for data
     <size>                      maximal size of the data
