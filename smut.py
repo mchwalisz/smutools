@@ -136,6 +136,12 @@ def main(args):
             log.info("No devices found. Exiting...")
         exit()
     if args['--plot']:
+        try:
+            from smuts_gui import plot_wispy
+            plot_wispy.process_all(
+                args['<dir>'] if args['<dir>'] is not None else '.')
+        except Exception, e:
+            log.error(e)
         matlab_plot(args['<dir>'], args['<size>'])
         exit()
     if not telos_devs and not wispy_devs and not args['--fsv']:
@@ -186,6 +192,11 @@ def main(args):
                 break
     for x in threads:
         x.stop()
+        try:
+            from smuts_gui import plot_wispy
+            plot_wispy.process_file(x.filename)
+        except Exception, e:
+            log.error(e)
 # def main
 
 
