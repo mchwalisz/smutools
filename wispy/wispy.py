@@ -13,18 +13,30 @@ import logging
 spectools_dir = "./spectools"  # Has to relative to the the wispy.py module
 
 
-class sensing(threading.Thread):
+class sensing(object):
     '''
     classdocs
     '''
 
     def __init__(self, name='0', wispy_nr='0', fileName='data', band='0'):
-        threading.Thread.__init__(self, name=' '.join(['Wispy', name]))
+        # threading.Thread.__init__(self, name=' '.join(['Wispy', name]))
         self.wispy_nr = wispy_nr
         self.band = band
         self._stop = threading.Event()
-        self.filename = ''.join([fileName, '_wispy_%s_%s.txt' % (name, self.wispy_nr)])
+        self.filename = ''.join([fileName, '_wispy_%s_%s.txt' %
+            (name, self.wispy_nr)])
         self.logger = logging.getLogger('sensing.wispy')
+
+    def start(self):
+        """start() -> docstring"""
+        try:
+            self._stop.clear()
+            self.thread.terminate()
+        except AttributeError:
+            pass
+        self.thread = threading.Thread(target=self.run)
+        self.thread.start()
+    # def start
 
     def stop(self):
         self._stop.set()
@@ -36,12 +48,16 @@ class sensing(threading.Thread):
 
     def run(self):
         self.sema_install.acquire()
-        self.logger.info('START - file {0} - device {1}'.format(self.filename, self.wispy_nr))
+        self.logger.info('START - file %s - device %s'
+            % (self.filename, self.wispy_nr))
         # Prepare log file
+        if os.path.exists(self.filename):
+            self.logger.warning("file '%s' exists" % self.filename)
         log_file = open(self.filename, 'w')
         # Run sensing
         cmd_run = [
-            '/'.join([os.path.dirname(__file__), spectools_dir, "spectool_raw"]),
+            '/'.join([os.path.dirname(__file__),
+                spectools_dir, "spectool_raw"]),
             "-d", self.wispy_nr, "-r", self.band
         ]
         self.logger.debug(' '.join(cmd_run))
@@ -51,13 +67,15 @@ class sensing(threading.Thread):
                                 stdin=None,
                                 close_fds=True)
         self.sema_install.release()
-        self.logger.info('RUNNING - file {0} - device {1}'.format(self.filename, self.wispy_nr))
+        self.logger.info('RUNNING - file %s - device %s'
+            % (self.filename, self.wispy_nr))
         self._stop.wait()
         self.sema_install.acquire()
         proc.terminate()
         proc.wait()
         log_file.close()
-        self.logger.info('STOP - file {0} - device {1}'.format(self.filename, self.wispy_nr))
+        self.logger.info('STOP - file %s - device %s'
+            % (self.filename, self.wispy_nr))
         self.sema_install.release()
 
 
@@ -67,7 +85,10 @@ def list_devs():
         " -l ", " | grep Device | awk '{print $2}'"
     ])
     #print(cmd_grep_nodes)
-    dev_nr = subprocess.Popen(cmd_grep_nodes, stdout=subprocess.PIPE, shell=True).stdout.read()
+    dev_nr = subprocess.Popen(
+        cmd_grep_nodes,
+        stdout=subprocess.PIPE,
+        shell=True).stdout.read()
     mote_devs = str(dev_nr.decode('UTF-8'))
     mote_devs = mote_devs.split('\n')
     dev_list = []
@@ -77,13 +98,18 @@ def list_devs():
             dev_list.append(x)
     return dev_list
 
+
 def list_wispy():
     cmd_nodes = ''.join([
         '/'.join([os.path.dirname(__file__), spectools_dir, "spectool_raw"]),
         " -l "
     ])
-    out = subprocess.Popen(cmd_nodes, stdout=subprocess.PIPE, shell=True).stdout.read()
+    out = subprocess.Popen(
+        cmd_nodes,
+        stdout=subprocess.PIPE,
+        shell=True).stdout.read()
     return out.split('\n')
+
 
 def main():
     logger = logging.getLogger('sensing')
@@ -92,7 +118,8 @@ def main():
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
     # create formatter and add it to the handlers
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
     logger.addHandler(ch)
     dev_list = list_devs()
