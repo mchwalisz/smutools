@@ -139,7 +139,8 @@ def main(args):
         try:
             from smuts_gui import plot_wispy
             plot_wispy.process_all(
-                args['<dir>'] if args['<dir>'] is not None else '.')
+                args['<dir>'] if args['<dir>'] is not None else '.',
+                skip=True)
         except Exception, e:
             log.error(e)
         matlab_plot(args['<dir>'], args['<size>'])
