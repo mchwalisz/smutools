@@ -42,7 +42,7 @@ int ndev = 0;
 void sighandle(int sig) {
 	int x;
 
-	printf("Dying %d from signal %d\n", getpid(), sig);
+	printf("# Dying %d from signal %d\n", getpid(), sig);
 
 	exit(1);
 }
@@ -223,16 +223,16 @@ int main(int argc, char *argv[]) {
 			devs = pi;
 
 			if (spectool_device_init(pi, &(list.list[x])) < 0) {
-				printf("Error initializing WiSPY device %s id %u\n",
+				printf("# Error initializing WiSPY device %s id %u\n",
 					   list.list[x].name, list.list[x].device_id);
-				printf("%s\n", spectool_get_error(pi));
+				printf("# %s\n", spectool_get_error(pi));
 				exit(1);
 			}
 
 			if (spectool_phy_open(pi) < 0) {
-				printf("Error opening WiSPY device %s id %u\n",
+				printf("# Error opening WiSPY device %s id %u\n",
 					   list.list[x].name, list.list[x].device_id);
-				printf("%s\n", spectool_get_error(pi));
+				printf("# %s\n", spectool_get_error(pi));
 				exit(1);
 			}
 
@@ -256,9 +256,9 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, "debug - spectool_device_init\n");
 #endif
 			if (spectool_device_init(pi, &(list.list[x])) < 0) {
-				printf("Error initializing WiSPY device %s id %u\n",
+				printf("# Error initializing WiSPY device %s id %u\n",
 					   list.list[x].name, list.list[x].device_id);
-				printf("%s\n", spectool_get_error(pi));
+				printf("# %s\n", spectool_get_error(pi));
 				exit(1);
 			}
 
@@ -266,9 +266,9 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, "debug - spectool_phy_open\n");
 #endif
 			if (spectool_phy_open(pi) < 0) {
-				printf("Error opening WiSPY device %s id %u\n",
+				printf("# Error opening WiSPY device %s id %u\n",
 					   list.list[x].name, list.list[x].device_id);
-				printf("%s\n", spectool_get_error(pi));
+				printf("# %s\n", spectool_get_error(pi));
 				exit(1);
 			}
 
@@ -337,7 +337,7 @@ int main(int argc, char *argv[]) {
 		tm.tv_usec = 10000;
 
 		if (select(maxfd + 1, &rfds, &wfds, NULL, &tm) < 0) {
-			printf("spectool_raw select() error: %s\n", strerror(errno));
+			printf("# spectool_raw select() error: %s\n", strerror(errno));
 			exit(1);
 		}
 
@@ -402,9 +402,9 @@ int main(int argc, char *argv[]) {
 
 			if (spectool_phy_getpollfd(di) < 0) {
 				if (spectool_get_state(di) == SPECTOOL_STATE_ERROR) {
-					printf("Error polling spectool device %s\n",
+					printf("# Error polling spectool device %s\n",
 						   spectool_phy_getname(di));
-					printf("%s\n", spectool_get_error(di));
+					printf("# %s\n", spectool_get_error(di));
 					exit(1);
 				}
 
@@ -428,7 +428,7 @@ int main(int argc, char *argv[]) {
 						spectool_phy_getcurprofile(di);
 
 					if (ran == NULL) {
-						printf("Error - no current profile?\n");
+						printf("# Error - no current profile?\n");
 						continue;
 					}
 
@@ -445,9 +445,9 @@ int main(int argc, char *argv[]) {
 
 					continue;
 				} else if ((r & SPECTOOL_POLL_ERROR)) {
-					printf("Error polling spectool device %s\n",
+					printf("# Error polling spectool device %s\n",
 						   spectool_phy_getname(di));
-					printf("%s\n", spectool_get_error(di));
+					printf("# %s\n", spectool_get_error(di));
 					exit(1);
 				} else if ((r & SPECTOOL_POLL_SWEEPCOMPLETE)) {
 					sb = spectool_phy_getsweep(di);
