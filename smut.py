@@ -10,7 +10,7 @@ Supports:
 
 
 Usage:
-  smut.py [-q|-v] [options] <prefix>
+  smut.py [-q|-v] [options] [<prefix>]
   smut.py [-q|-v] --plot [<dir> [<size>]]
   smut.py [-q|-v] --list
   smut.py -h | --help
@@ -151,7 +151,9 @@ def main(args):
         print __doc__
         exit()
     if args['<prefix>'] is None:
-        args['<prefix>'] = 'data'
+        import socket
+        args['<prefix>'] = "%s_%s" % \
+            (time.strftime("%Y-%m-%d_%H:%M:%S"), socket.gethostname())
     flist = glob.glob("%s_*.txt" % (args['<prefix>']))
     if flist and not args['--force-overwrite']:
         log.error("Data with selected prefix (%s) exist:\n%s\nExiting..."
