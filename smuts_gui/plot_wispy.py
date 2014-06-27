@@ -246,6 +246,9 @@ def process_file(filename, skip=False):
     hist, bins = get_histogram(df)
     log.debug("made histogram")
     plot_summary(filename, df, hist, bins)
+    del df
+    del hist
+    del bins
     log.debug("done.")
 # def process_file
 
