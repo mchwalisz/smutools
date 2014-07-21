@@ -163,7 +163,8 @@ def plot_summary(filename, df, hist, bins):
     last = df.index[-1] - df.index[0]
     cax1 = ax1.imshow(df.T, cmap=color_map,
         aspect='auto', interpolation='nearest',
-        extent=[0, last.total_seconds(), df.columns[0], df.columns[-1]])
+        extent=[0, last.total_seconds(), df.columns[0], df.columns[-1]],
+        origin='lower')
     cbar1 = fig.colorbar(cax1)
 
     fig.canvas.draw()
