@@ -14,6 +14,8 @@ Arguments:
 
 Options:
     -s, --skip-existing       skip existing
+    --pdf                     generate pdf instead of png
+
 Other options:
     --config                  prints empty config file
     -c CONFIG                 loads config file
@@ -224,7 +226,7 @@ def plot_summary(filename, df, hist, bins):
     fig.subplots_adjust(top=0.93)
 
     #plt.savefig(FILE_NAME + '.png', dpi=300, transparent=True)
-    fig.savefig(os.path.splitext(filename)[0] + '_summary.png',
+    fig.savefig(''.join([os.path.splitext(filename)[0], '_summary', filetype]),
         dpi=300, bbox_inches='tight')
     plt.close(fig)
 
@@ -239,7 +241,7 @@ def process_file(filename, skip=False):
             not filename.endswith('.txt'):
         return
     log.info("processing: %s" % filename)
-    if skip and os.path.isfile(os.path.splitext(filename)[0] + '_summary.png'):
+    if skip and os.path.isfile(''.join([os.path.splitext(filename)[0], '_summary', filetype])):
         log.info("exists, skipping.")
         return
     df = get_wispy_data(filename)
@@ -263,11 +265,15 @@ def process_all(flist, skip=False):
                 for name in files:
                     process_file(os.path.join(root, name), skip)
 
+filetype = '.png'
 
 def main(args):
     """Run the code for plot_wispy"""
     log = logging.getLogger('plot_wispy.main')
     log.info(args)
+    if args['--pdf']:
+        global filetype
+        filetype = '.pdf'
     process_all(args['FILE'], args['--skip-existing'])
 # def main
 
