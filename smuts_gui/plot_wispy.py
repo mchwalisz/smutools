@@ -84,7 +84,7 @@ def parse_run_parameters(fname, comment='#'):
         "skipfooter": tail(fname)}
     with open(fname) as f:
         restr = ("(?P<start>\d+)MHz-(?P<stop>\d+)MHz"
-                 " @ (?P<rbw>\d+\.?\d*)KHz, (?P<samples>\d+) samples")
+                 " @ (?P<rbw>\d+\.?\d*)(?P<rbwu>[KM]Hz), (?P<samples>\d+) samples")
         p = re.compile(restr)
         for line in f:
             if line.startswith(comment):
@@ -98,7 +98,10 @@ def parse_run_parameters(fname, comment='#'):
                 return_dict["start"] = float(m.group('start'))
                 return_dict["stop"] = float(m.group('stop'))
                 return_dict["samples"] = int(m.group('samples'))
-                return_dict["step"] = float(m.group('rbw'))
+                if m.group('rbwu') is "KHz":
+                    return_dict["step"] = float(m.group('rbw'))
+                else:
+                    return_dict["step"] = float(m.group('rbw')) * 1000
                 return_dict["freq_list"] = np.linspace(
                     float(m.group('start')),
                     float(m.group('stop')),

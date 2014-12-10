@@ -81,7 +81,7 @@ class FileReaderWiSpy(FileReader):
     def detectFrequencyList(self, line):
         line = line.lstrip("#").lstrip()
         restr = ("(?P<start>\d+)MHz-(?P<stop>\d+)MHz" +
-            " @ (?P<rbw>\d+\.?\d*)KHz, (?P<samples>\d+) samples")
+            " @ (?P<rbw>\d+\.?\d*)[KM]Hz, (?P<samples>\d+) samples")
         p = re.compile(restr)
         m = p.match(line)
         if m:
