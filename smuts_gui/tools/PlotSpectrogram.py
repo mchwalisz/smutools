@@ -16,6 +16,7 @@ try:
     from matplotlib.figure import Figure
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
     import matplotlib.cm as cm
+    import ViridisCM as viridis
 except:
     print """
     Requirements installation (on ubuntu):
@@ -52,7 +53,7 @@ class PlotSpectrogram(FigureCanvas):
         t0 = time.time() - (fReader.timeStart + fReader.timeStamp[-1])
         t1 = time.time() - (fReader.timeStart + fReader.timeStamp[0])
         if self.image is None:
-            self.image = self.axes.matshow(fReader.sweepAll, cmap=cm.jet,
+            self.image = self.axes.matshow(fReader.sweepAll, cmap=viridis.cm,
                                            animated=True, aspect="auto",
                                            extent=[freqList[0], freqList[-1], t0, t1])
             self.figure.colorbar(self.image)

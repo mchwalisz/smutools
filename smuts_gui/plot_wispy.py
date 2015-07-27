@@ -45,6 +45,7 @@ import pylab
 import re
 import os
 import logging
+import tools.ViridisCM as viridis
 
 #### Data parsing functions
 
@@ -152,13 +153,13 @@ def get_histogram(df):
 
 
 def plot_summary(filename, df, hist, bins):
-    color_map = plt.get_cmap("hot")
+    # color_map = plt.get_cmap("viridis")
     fig = plt.figure(figsize=(10, 10))
     fig.suptitle(os.path.splitext(os.path.basename(filename))[0],
         fontsize=14, fontweight='bold')
 
     ax = fig.add_subplot(2, 1, 1)
-    cax = ax.imshow(hist, cmap=color_map,
+    cax = ax.imshow(hist, cmap=viridis.cm,
                     origin="lower", interpolation='none',
                     extent=[df.columns[0], df.columns[-1], bins[0], bins[-1]],
                     aspect='auto')
@@ -166,7 +167,7 @@ def plot_summary(filename, df, hist, bins):
 
     ax1 = fig.add_subplot(2, 1, 2)
     last = df.index[-1] - df.index[0]
-    cax1 = ax1.imshow(df.T, cmap=color_map,
+    cax1 = ax1.imshow(df.T, cmap=viridis.cm,
         aspect='auto', interpolation='nearest',
         extent=[0, last.total_seconds(), df.columns[0], df.columns[-1]],
         origin='lower')
